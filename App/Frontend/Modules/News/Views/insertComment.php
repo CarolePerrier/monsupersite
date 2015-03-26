@@ -1,5 +1,17 @@
 <h2>Ajouter un commentaire</h2>
+
 <form action="" method="post">
+  <p>
+    <?= $form ?>
+    
+    <input type="submit" value="Commenter" />
+  </p>
+</form>
+
+
+
+
+<!-- <form action="" method="post">
   <p>
     <?= isset($erreurs) && in_array(\Entity\Comment::AUTEUR_INVALIDE, $erreurs) ? 'L\'auteur est invalide.<br />' : '' ?>
     <label>Pseudo</label>
@@ -11,4 +23,4 @@
  
     <input type="submit" value="Commenter" />
   </p>
-</form>
+</form> -->
