@@ -74,9 +74,10 @@ class NewsController extends BackController
 
     $form = $formBuilder->form();
 
-    if ($request->method() == 'POST' && $form->isValid())
+    // On récupère le gestionnaire de formulaire (le paramètre de getManagerOf() est bien entendu à remplacer).
+    $formHandler = new \OCFram\FormHandler($form, $this->managers->getManagerOf('Comments'), $request);
+    if ($formHandler->process())
     {
-      $this->managers->getManagerOf('Comments')->save($comment);
       $this->app->user()->setFlash('Le commentaire a bien été ajouté, merci !');
       $this->app->httpResponse()->redirect('news-'.$request->getData('news').'.html');
     }
