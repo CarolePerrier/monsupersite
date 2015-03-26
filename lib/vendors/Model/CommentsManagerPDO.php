@@ -50,5 +50,15 @@ class CommentsManagerPDO extends CommentsManager
   {
     $this->dao->exec('DELETE FROM comments WHERE news = '.(int) $news);
   }
+  public function get($id)
+  {
+    $q = $this->dao->prepare('SELECT id, news, auteur, contenu FROM comments WHERE id = :id');
+    $q->bindValue(':id', (int) $id, \PDO::PARAM_INT);
+    $q->execute();
+ 
+    $q->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Comment');
+ 
+    return $q->fetch();
+  }
 }
 ?>

@@ -27,6 +27,13 @@ class NewsController extends BackController
 
     $this->page->addVar('title', 'Ajout d\'une news');
   }
+
+  public function executeUpdate(HTTPRequest $request)
+  {
+    $this->processForm($request);
+ 
+    $this->page->addVar('title', 'Modification d\'une news');
+  }
   
   public function processForm(HTTPRequest $request)
   {
@@ -62,7 +69,7 @@ class NewsController extends BackController
     $form = $formBuilder->form();
 
     // On récupère le gestionnaire de formulaire (le paramètre de getManagerOf() est bien entendu à remplacer).
-    $formHandler = new \OCFram\FormHandler($form, $this->managers->getManagerOf('Comments'), $request);
+    $formHandler = new \OCFram\FormHandler($form, $this->managers->getManagerOf('News'), $request);
     if ($formHandler->process())
     {
       $this->app->user()->setFlash($news->isNew() ? 'La news a bien été ajoutée !' : 'La news a bien été modifiée !');
@@ -70,16 +77,6 @@ class NewsController extends BackController
     }
 
     $this->page->addVar('form', $form->createView());
-  }
-
-
-  public function executeDelete(HTTPRequest $request)
-  {
-    $this->managers->getManagerOf('News')->delete($request->getData('id'));
-    
-    $this->app->user()->setFlash('La news a bien été supprimée !');
-    
-    $this->app->httpResponse()->redirect('.');
   }
 
   public function executeUpdateComment(HTTPRequest $request)
@@ -139,15 +136,3 @@ class NewsController extends BackController
 
 <?php
 
-
-class NewsController extends BackController
-{
-  // ...
-  
-  
-
-  
-  
-
-  
-}
