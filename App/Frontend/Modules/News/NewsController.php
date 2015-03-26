@@ -4,9 +4,8 @@ namespace App\Frontend\Modules\News;
 use \OCFram\BackController;
 use \OCFram\HTTPRequest;
 use \Entity\Comment;
-use \OCFram\Form;
-use \OCFram\StringField;
-use \OCFram\TextField;
+use \FormBuilder\CommentFormBuilder;
+use \OCFram\FormHandler;
 
 class NewsController extends BackController
 {

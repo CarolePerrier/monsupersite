@@ -1,4 +1,3 @@
-
 <?php
 namespace OCFram;
 //trait permettant d'hydrater à la fois la classe entity et la classe field
@@ -17,3 +16,4 @@ trait Hydrator
     }
   }
 }
+?>

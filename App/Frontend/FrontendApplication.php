@@ -1,4 +1,4 @@
-<?
+<?php
 	namespace App\Frontend;
 
 	//on va chercher l'application
@@ -23,3 +23,4 @@
 			$this->httpResponse->send();
 		}
 	}
+?>

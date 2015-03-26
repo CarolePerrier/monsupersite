@@ -6,14 +6,16 @@ abstract class Application
   protected $httpRequest;
   protected $httpResponse;
   protected $name;
-  protected $User
+  protected $User;
+  protected $Config;
   
   public function __construct()
   {
     $this->httpRequest  = new HTTPRequest($this);
     $this->httpResponse = new HTTPResponse($this);
     $this->name         = '';
-    $this->User         = new User()
+    $this->User         = new User($this);
+    $this->Config       = new Config($this);
   }
   
   public function getController()
@@ -77,6 +79,16 @@ abstract class Application
   public function name()
   {
     return $this->name;
+  }
+
+  public function Config()
+  {
+    return $this->Config;
+  }
+ 
+  public function User()
+  {
+    return $this->User;
   }
 }
 ?>
