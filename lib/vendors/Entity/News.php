@@ -5,7 +5,8 @@ use \OCFram\Entity;
 
 class News extends Entity
 {
-  protected $auteur,
+  protected $auteurId,
+            $auteur,
             $titre,
             $contenu,
             $dateAjout,
@@ -14,6 +15,12 @@ class News extends Entity
   const AUTEUR_INVALIDE = 1;
   const TITRE_INVALIDE = 2;
   const CONTENU_INVALIDE = 3;
+
+
+  public function setAuthor($author)
+  {
+    $this->author = (int) $author;
+  }
 
   public function isValid()
   {
