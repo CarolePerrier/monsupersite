@@ -22,7 +22,7 @@ class User
   {
     return isset($_SESSION['flash']);
   }
-
+  //Vérifiation de la connexion d'un admin
   public function isAuthenticated()
   {
     return isset($_SESSION['auth']) && $_SESSION['auth'] === true;
@@ -32,7 +32,7 @@ class User
   {
     $_SESSION[$attr] = $value;
   }
-
+  //Connexion d'un admin
   public function setAuthenticated($authenticated = true)
   {
     if (!is_bool($authenticated))

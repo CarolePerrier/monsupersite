@@ -1,14 +1,24 @@
 <?php
-namespace App\Backend\Modules\Connexion;
+namespace App\Backend\Modules\LogOut;
 
 use \OCFram\BackController;
 use \OCFram\HTTPRequest;
 
-class ConnexionController extends BackController
+class LogOutController extends BackController
 {
-  public function executeIndex(HTTPRequest $request)
+  public function executeLogOut(HTTPRequest $request)
   {
-    $this->page->addVar('title', 'Connexion');
+    $this->page->addVar('title', 'LogOut');
+    if ($this->app->user()->isAuthenticated() == true)
+    {
+      $this->app->user()->setAuthenticated(false);
+      $this->app->httpResponse()->redirect('/admin/');
+    }
+  }
+}
+?>
+
+<!-- $this->page->addVar('title', 'Connexion');
     
     if ($request->postExists('login'))
     {
@@ -24,7 +34,4 @@ class ConnexionController extends BackController
       {
         $this->app->user()->setFlash('Le pseudo ou le mot de passe est incorrect.');
       }
-    }
-  }
-}
-?>
+    } -->
