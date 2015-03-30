@@ -30,6 +30,7 @@ class ConnexionController extends BackController
         {
           echo 'test de la variable auteur';
           
+          $this->app->user()->setAuthenticated(true);
           $this->app->user()->setAuthenticatedAdmin(true);
           $this->app->httpResponse()->redirect('/admin/');
           die;
