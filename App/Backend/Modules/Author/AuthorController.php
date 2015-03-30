@@ -11,7 +11,7 @@ use \OCFram\FormHandler;
 
 class AuthorController extends BackController
 {
-  public function executeAuthor(HTTPRequest $request)
+  public function executeIndex(HTTPRequest $request)
   {
     $this->page->addVar('title', 'Gestion des auteurs');
 
@@ -24,7 +24,6 @@ class AuthorController extends BackController
   public function executeInsert(HTTPRequest $request)
   {
     $this->processForm($request);
-
     $this->page->addVar('title', 'Ajout d\'un auteur');
   }
 
@@ -36,7 +35,8 @@ class AuthorController extends BackController
   }
   
   public function processForm(HTTPRequest $request)
-  {
+  { 
+
     if ($request->method() == 'POST')
     {
       $author = new Author([
@@ -46,7 +46,6 @@ class AuthorController extends BackController
         'pseudo' => $request->postData('pseudo'),
         'Mot de passe' => $request->postData('pwd')
       ]);
-
       if ($request->getExists('id'))
       {
         $author->setId($request->getData('id'));
@@ -65,7 +64,8 @@ class AuthorController extends BackController
       }
     }
     
-    $formBuilder = new AuthorsFormBuilder($author);
+    $formBuilder = new AuthorFormBuilder($author);
+
     $formBuilder->build();
 
     $form = $formBuilder->form();
@@ -95,7 +95,7 @@ class AuthorController extends BackController
         'dateofbirth' => $request->postData('dateofbirth'),
         'dateModif' => $request->postData('dateModif'),
         'pwd' => $request->postData('pwd'),
-        'pseudo' => $request->postData('pseudo')
+        'auteur' => $request->postData('auteur')
       ]);
     }
     else
@@ -125,8 +125,22 @@ class AuthorController extends BackController
     $this->managers->getManagerOf('Authors')->delete($authorId);
 
     $this->app->user()->setFlash('L\'auteur a bien été supprimée !');
-
     $this->app->httpResponse()->redirect('.');
+  }
+
+
+//List of all authors registered in the database
+public function executeShow(HTTPRequest $request)
+  {
+    $author = $this->managers->getManagerOf('Authors')->getList($request->getData('id'));
+
+    if (empty($author))
+    {
+      $this->app->httpResponse()->redirect404();
+    }
+    
+    $this->page->addVar('author', $this->managers->getManagerOf('Authors')->getList($request->getData('id')));
+    // $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
   }
 }
 ?>

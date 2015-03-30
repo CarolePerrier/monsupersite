@@ -55,5 +55,7 @@ abstract class AuthorsManager extends Manager
 
 
   abstract public function count();
+
+  abstract public function IsValidPseudo($value);
 }
 ?>

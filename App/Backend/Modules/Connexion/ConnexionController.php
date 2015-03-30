@@ -27,20 +27,13 @@ class ConnexionController extends BackController
       if ($author != null)
       {
         if ($author->authors_fk_type == 1)
-        {
-          echo 'test de la variable auteur';
-          
+        {          
           $this->app->user()->setAuthenticated(true);
           $this->app->user()->setAuthenticatedAdmin(true);
           $this->app->httpResponse()->redirect('/admin/');
-          die;
-
         }
         else
-        {
-          var_dump($author);
-          echo $login, $password;
-          
+        {          
           $this->app->user()->setAuthenticated(true);
           $this->app->httpResponse()->redirect('/admin/');
         }
@@ -49,7 +42,7 @@ class ConnexionController extends BackController
       }
       else
       {
-        $this->app->user()->setFlash('Le pseudo ou le mot de passe est incorrect.');
+        $this->app->user()->setFlash('Le auteur ou le mot de passe est incorrect.');
       }
     }
   }

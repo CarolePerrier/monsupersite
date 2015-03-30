@@ -17,7 +17,7 @@ class HTTPResponse
   }
 
   public function redirect404()
-  {
+  { 
     $this->page = new Page($this->app);
     $this->page->setContentFile(__DIR__.'/../../Errors/404.html');
     

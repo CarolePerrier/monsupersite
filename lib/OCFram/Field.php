@@ -24,14 +24,13 @@ abstract class Field
   public function isValid()
   {
     foreach ($this->validators as $validator)
-    {
+    { 
       if (!$validator->isValid($this->value))
       {
         $this->errorMessage = $validator->errorMessage();
         return false;
       }
     }
-    
     return true;
   }
   

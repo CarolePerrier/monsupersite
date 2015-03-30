@@ -7,19 +7,11 @@ class AuthorsManagerPDO extends AuthorsManager
 {
   public function getList($debut = -1, $limite = -1)
   {
-    $sql = 'SELECT id, firstname, lastname, pseudo, registrationdate, dateofbirth, dateModif FROM authors ORDER BY id DESC';
-    
-    if ($debut != -1 || $limite != -1)
-    {
-      $sql .= ' LIMIT '.(int) $limite.' OFFSET '.(int) $debut;
-    }
-    
-    $requete = $this->dao->query($sql);
+    $requete = $this->dao->prepare('SELECT id, firstname, lastname, pseudo, registrationdate, dateofbirth, dateModif FROM authors ORDER BY id DESC');
+    $requete->execute();
     $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Author');
-    
-    $requete->closeCursor();
-    
-    return $listeAuthors;
+    $listAuthors = $requete->fetchAll();
+    return $listAuthors;
   }
 
   public function getUnique($login, $password)
@@ -48,12 +40,12 @@ class AuthorsManagerPDO extends AuthorsManager
 
   protected function add(Author $author)
   {
-    $requete = $this->dao->prepare('INSERT INTO authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, pseudo = :pseudo, registrationdate = NOW(), dateofbirth = :dateofbirth, dateModif = NOW()');
+    $requete = $this->dao->prepare('INSERT INTO authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, auteur = :auteur, registrationdate = NOW(), dateofbirth = :dateofbirth, dateModif = NOW()');
     
     $requete->bindValue(':firstname', $author->firstname());
     $requete->bindValue(':lastname', $author->lastname());
     $requete->bindValue(':pwd', $author->pwd());
-    $requete->bindValue(':pseudo', $author->pseudo());
+    $requete->bindValue(':auteur', $author->auteur());
     $requete->bindValue(':dateofbirth', $author->dateofbirth());
     
     $requete->execute();
@@ -61,10 +53,9 @@ class AuthorsManagerPDO extends AuthorsManager
 
     protected function modify(Author $author)
     {
-      $requete = $this->dao->prepare('UPDATE authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, pseudo = :pseudo, dateofbirth = :dateofbirth, dateModif = NOW() WHERE id = :id');
+      $requete = $this->dao->prepare('UPDATE authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, auteur = :auteur, dateofbirth = :dateofbirth, dateModif = NOW() WHERE id = :id');
       
       $requete->bindValue(':firstname', $author->firstname());
-      $requete->bindValue(':lastname', $author->lastname());
       $requete->bindValue(':lastname', $author->lastname());
       $requete->bindValue(':pwd', $author->pwd());
       $requete->bindValue(':dateofbirth', $author->dateofbirth());
@@ -76,6 +67,22 @@ class AuthorsManagerPDO extends AuthorsManager
   public function delete($id)
   {
     $this->dao->exec('DELETE FROM authors WHERE id = '.(int) $id);
+  }
+
+  public function IsValidPseudo($value)
+  {
+    $requete = $this->dao->prepare('SELECT id FROM authors WHERE pseudo = :pseudo');
+    $requete->bindValue(':pseudo', $value);
+    $requete->execute();
+
+    $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Author');
+    
+    if ($author = $requete->fetch())
+    {     
+      var_dump($author);
+      return true;
+    }
+    return false;
   }
 }
 ?>

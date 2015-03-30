@@ -4,6 +4,7 @@ namespace FormBuilder;
 use \OCFram\FormBuilder;
 use \OCFram\StringField;
 use \OCFram\TextField;
+use \OCFram\DateField;
 use \OCFram\MaxLengthValidator;
 use \OCFram\NotNullValidator;
 use \OCFram\DateValidator;
@@ -17,11 +18,12 @@ class AuthorFormBuilder extends FormBuilder
         'name' => 'pseudo',
         'maxLength' => 50,
         'validators' => [
-          new MaxLengthValidator('Le pseudo spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier le prénom de l\'auteur'),
+          new MaxLengthValidator('Le pseudo de l\'auteur spécifié est trop long (50 caractères maximum)', 50),
+          new NotNullValidator('Merci de spécifier le pseudo de l\'auteur'),
+          //new ExistingAuthor('Pseudo invalide'),
         ],
        ]))
-    $this->form->add(new StringField([
+       ->add(new StringField([
         'label' => 'Firstname',
         'name' => 'firstname',
         'maxLength' => 50,

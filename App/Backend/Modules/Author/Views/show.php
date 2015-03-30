@@ -1,36 +1,21 @@
-<p>Par <em><?= $news['auteurId'] ?></em>, le <?= $news['dateAjout']->format('d/m/Y à H\hi') ?></p>
-<h2><?= $news['titre'] ?></h2>
-<p><?= nl2br($news['contenu']) ?></p>
-
-<?php if ($news['dateAjout'] != $news['dateModif']) { ?>
-  <p style="text-align: right;"><small><em>Modifiée le <?= $news['dateModif']->format('d/m/Y à H\hi') ?></em></small></p>
-<?php } ?>
-
-<p><a href="commenter-<?= $news['id'] ?>.html">Ajouter un commentaire</a></p>
+<h2>Liste des auteurs</h2>
 
 <?php
-if (empty($comments))
+if (empty($author))
 {
 ?>
-<p>Aucun commentaire n'a encore été posté. Soyez le premier à en laisser un !</p>
+<p>Aucun auteur n'a encore été ajouté. Soyez le premier à vous inscrire !</p>
 <?php
 }
 
-foreach ($comments as $comment)
+foreach ($author as $author)
 {
 ?>
 <fieldset>
-  <legend>
-    Posté par <strong><?= htmlspecialchars($comment['auteur']) ?></strong> le <?= $comment['date']->format('d/m/Y à H\hi') ?>
-    <?php if ($user->isAuthenticated()) { ?> -
-      <a href="admin/comment-update-<?= $comment['id'] ?>.html">Modifier</a> |
-      <a href="admin/comment-delete-<?= $comment['id'] ?>.html">Supprimer</a>
-    <?php } ?>
-  </legend>
-  <p><?= nl2br(htmlspecialchars($comment['contenu'])) ?></p>
+	<?php
+      echo '<tr><td>', $author['pseudo'], '</td> <td>', $author['firstname'], '</td> <td> ', $author['lastname'], '</td><td>', '</td><td><a href="author-update-', $author['id'], '.html"><img src="/images/update.png" alt="Modifier" /></a> <a href="author-delete-', $author['id'], '.html"><img src="/images/delete.png" alt="Supprimer" /></a></td></tr>', "\n";
+      ?>
 </fieldset>
 <?php
 }
 ?>
-
-<p><a href="commenter-<?= $news['id'] ?>.html">Ajouter un commentaire</a></p>

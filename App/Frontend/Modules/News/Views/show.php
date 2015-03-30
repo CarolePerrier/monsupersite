@@ -1,4 +1,4 @@
-<p>Par <em><?= $news['auteurId'] ?></em>, le <?= $news['dateAjout']->format('d/m/Y à H\hi') ?></p>
+<p>Par <em><?= $news['news_fk_author'] ?></em>, le <?= $news['dateAjout']->format('d/m/Y à H\hi') ?></p>
 <h2><?= $news['titre'] ?></h2>
 <p><?= nl2br($news['contenu']) ?></p>
 

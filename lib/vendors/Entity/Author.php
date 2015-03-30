@@ -16,7 +16,7 @@ class Author extends Entity
   const PRENOM_INVALIDE         = 1;
   const NOM_INVALIDE            = 2;
   const DATE_NAISSANCE_INVALIDE = 3;
-  const PSEUDO_INVALIDE         = 4;
+  const auteur_INVALIDE         = 4;
   const PWD_INVALIDE            = 5;
 
   public function isValid()
@@ -63,7 +63,7 @@ class Author extends Entity
     $this->dateModif = $date;
   }
 
-  public function setDateOfBirth(\DateTime $date)
+  public function setDateOfBirth($date)
   {
     $this->dateofbirth = $date;
   }

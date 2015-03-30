@@ -40,14 +40,13 @@ class NewsController extends BackController
     if ($request->method() == 'POST')
     {
       $news = new News([
-        'auteur' => $request->postData('news_fk_author'),
+        'auteur' => $request->postData('auteur'),
         'titre' => $request->postData('titre'),
         'contenu' => $request->postData('contenu')
       ]);
 
       if ($request->getExists('id'))
       {
-        $news->setId($request->getData('id'));
         $news->setId($request->getData('id'));
       }
     }
@@ -57,12 +56,10 @@ class NewsController extends BackController
       if ($request->getExists('id'))
       {
         $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
-
       }
       else
       {
-        $news = new News;
-        
+        $news = new News;        
       }
     }
 
@@ -135,6 +132,7 @@ class NewsController extends BackController
     $this->app->httpResponse()->redirect('.');
   }
 }
+
 ?>
 
 <?php

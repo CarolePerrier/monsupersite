@@ -1,4 +1,4 @@
-<h2>Ajouter un autheur</h2>
+<h2>Ajouter un auteur</h2>
 <form action="" method="post">
   <p>
     <?= $form ?>

@@ -7,7 +7,7 @@ class NewsManagerPDO extends NewsManager
 {
   public function getList($debut = -1, $limite = -1)
   {
-    $sql = 'SELECT id, news_fk_author, titre, contenu, dateAjout, dateModif FROM news ORDER BY id DESC';
+    $sql = 'SELECT id, news_fk_author, auteur, titre, contenu, dateAjout, dateModif FROM news ORDER BY id DESC';
     
     if ($debut != -1 || $limite != -1)
     {
@@ -31,7 +31,7 @@ class NewsManagerPDO extends NewsManager
 
   public function getUnique($id)
   {
-    $requete = $this->dao->prepare('SELECT id, news_fk_author, titre, contenu FROM news WHERE id = :id');
+    $requete = $this->dao->prepare('SELECT id, news_fk_author, auteur, titre, contenu FROM news WHERE id = :id');
     $requete->bindValue(':id', (int) $id, \PDO::PARAM_INT);
     $requete->execute();
     
@@ -54,31 +54,45 @@ class NewsManagerPDO extends NewsManager
 
   protected function add(News $news)
   {
-    $requete = $this->dao->prepare('INSERT INTO news SET news_fk_author = :auteur, titre = :titre, contenu = :contenu, dateAjout = NOW(), dateModif = NOW()');
-    //Get the AuthorId from his pseudo
+    $requete = $this->dao->prepare('INSERT INTO news SET news_fk_author = :auteurId, auteur = :auteurNews, titre = :titre, contenu = :contenu, dateAjout = NOW(), dateModif = NOW()');
+    //Get the AuthorId from his auteur
     $requeteAuteurId = $this->dao->prepare('SELECT id FROM Authors WHERE pseudo = :pseudo');
-    $requeteAuteurId->bindValue(':pseudo', $auteur->pseudo());
+    $requeteAuteurId->bindValue(':pseudo', $news->auteur());
     $requeteAuteurId->execute();
-    
+
+
     if ($AuteurId = $requeteAuteurId->fetch())
     {
-      $requete->bindValue(':auteur', $AuteurId, \PDO::PARAM_INT);
+      $requete->bindValue(':auteurId', (int)$AuteurId['id'], \PDO::PARAM_INT);
+      var_dump($AuteurId);
     }
+    echo $news->titre().' ', $news->contenu().' ',$news->auteur().' ';
     $requete->bindValue(':titre', $news->titre());
     $requete->bindValue(':contenu', $news->contenu());
-    
+    $requete->bindValue(':auteurNews', $news->auteur());
+
     $requete->execute();
   }
 
     protected function modify(News $news)
     {
-      $requete = $this->dao->prepare('UPDATE news SET news_fk_author = :auteur, titre = :titre, contenu = :contenu, dateModif = NOW() WHERE id = :id');
+      $requete = $this->dao->prepare('UPDATE news SET news_fk_author = :auteurId, auteur = :auteur, titre = :titre, contenu = :contenu, dateModif = NOW() WHERE id = :id');
       
       $requete->bindValue(':titre', $news->titre());
-      $requete->bindValue(':auteur', $news->auteur(), \PDO::PARAM_INT);
+      $requete->bindValue(':auteur', $news->auteur());
       $requete->bindValue(':contenu', $news->contenu());
       $requete->bindValue(':id', $news->id(), \PDO::PARAM_INT);
-      
+
+      $requeteAuteurId = $this->dao->prepare('SELECT id FROM Authors WHERE pseudo = :pseudo');
+      $requeteAuteurId->bindValue(':pseudo', $news->auteur());
+      $requeteAuteurId->execute();
+
+
+    if ($AuteurId = $requeteAuteurId->fetch())
+    {
+      $requete->bindValue(':auteurId', (int)$AuteurId['id'], \PDO::PARAM_INT);
+      var_dump($AuteurId);
+    }
       $requete->execute();
     }
 
