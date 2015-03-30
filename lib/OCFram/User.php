@@ -44,7 +44,7 @@ class User
     {
       throw new \InvalidArgumentException('La valeur spécifiée à la méthode User::setAuthenticated() doit être un boolean');
     }
-
+    echo 'Vous êtes connecté en tant qu\'utilisateur';
     $_SESSION['auth'] = $authenticated;
   }
 
@@ -54,7 +54,7 @@ class User
     {
       throw new \InvalidArgumentException('La valeur spécifiée à la méthode User::setAuthenticatedAdmin() doit être un boolean');
     }
-
+    echo 'Vous êtes connecté en tant qu\'Admin';
     $_SESSION['admin'] = $authenticated;
   }
 

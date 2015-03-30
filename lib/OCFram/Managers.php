@@ -22,6 +22,7 @@ class Managers
 
     if (!isset($this->managers[$module]))
     {
+
       $manager = '\\Model\\'.$module.'Manager'.$this->api;
       $this->managers[$module] = new $manager($this->dao);
     }

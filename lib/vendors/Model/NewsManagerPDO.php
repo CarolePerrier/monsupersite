@@ -13,7 +13,6 @@ class NewsManagerPDO extends NewsManager
     {
       $sql .= ' LIMIT '.(int) $limite.' OFFSET '.(int) $debut;
     }
-    var_dump($sql);
     $requete = $this->dao->query($sql);
     $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\News');
     
@@ -47,6 +46,7 @@ class NewsManagerPDO extends NewsManager
     }
     return null;
   }
+
   public function count()
   {
     return $this->dao->query('SELECT COUNT(*) FROM news')->fetchColumn();

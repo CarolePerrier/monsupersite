@@ -37,8 +37,10 @@ abstract class AuthorsManager extends Manager
    */
   abstract public function getList($author);
 
+  abstract public function getUnique($login, $password);
+
   /**
-   * Méthode permettant de supprimer un commentaire.
+   * Méthode permettant de supprimer un auteur.
    * @param $id L'identifiant de l'auteur à supprimer
    * @return void
    */
@@ -49,7 +51,9 @@ abstract class AuthorsManager extends Manager
    * @param $author L'identifiant de l'auteur dont les commentaires doivent être supprimés
    * @return void
    */
-  abstract public function deleteFromAuthors($author);
+  //abstract public function deleteFromAuthors($author);
 
+
+  abstract public function count();
 }
 ?>

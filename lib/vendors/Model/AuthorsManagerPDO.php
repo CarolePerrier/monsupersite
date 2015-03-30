@@ -3,7 +3,7 @@ namespace Model;
 
 use \Entity\Author;
 
-class AuthorManagerPDO extends AuthorManager
+class AuthorsManagerPDO extends AuthorsManager
 {
   public function getList($debut = -1, $limite = -1)
   {
@@ -22,20 +22,22 @@ class AuthorManagerPDO extends AuthorManager
     return $listeAuthors;
   }
 
-  public function getUnique($id)
+  public function getUnique($login, $password)
   {
-    $requete = $this->dao->prepare('SELECT id, firstname, lastname, pseudo, registrationdate, dateofbirth, dateModif FROM authors WHERE id = :id');
-    $requete->bindValue(':id', (int) $id, \PDO::PARAM_INT);
+    $requete = $this->dao->prepare('SELECT id, firstname, lastname, pseudo, pwd, dateofbirth, registrationdate, dateModif, authors_fk_type FROM authors WHERE pseudo = :pseudo AND pwd = :pwd');
+
+    $requete->bindValue(':pseudo', (string) $login, \PDO::PARAM_STR);
+    $requete->bindValue(':pwd', (string) $password, \PDO::PARAM_STR);
+
     $requete->execute();
-    
+
     $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Author');
+
     if ($author = $requete->fetch())
     {
-      $author->setDateAjout(new \DateTime($author->registrationdate()));
-      $news->setDateModif(new \DateTime($author->dateModif()));
-      
       return $author;
     }
+
     return null;
   }
 
@@ -44,29 +46,29 @@ class AuthorManagerPDO extends AuthorManager
     return $this->dao->query('SELECT COUNT(*) FROM authors')->fetchColumn();
   }
 
-  protected function add(Authors $authors)
+  protected function add(Author $author)
   {
     $requete = $this->dao->prepare('INSERT INTO authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, pseudo = :pseudo, registrationdate = NOW(), dateofbirth = :dateofbirth, dateModif = NOW()');
     
-    $requete->bindValue(':firstname', $authors->firstname());
-    $requete->bindValue(':lastname', $authors->lastname());
-    $requete->bindValue(':pwd', $authors->pwd());
-    $requete->bindValue(':pseudo', $authors->pseudo());
-    $requete->bindValue(':dateofbirth', $authors->dateofbirth());
+    $requete->bindValue(':firstname', $author->firstname());
+    $requete->bindValue(':lastname', $author->lastname());
+    $requete->bindValue(':pwd', $author->pwd());
+    $requete->bindValue(':pseudo', $author->pseudo());
+    $requete->bindValue(':dateofbirth', $author->dateofbirth());
     
     $requete->execute();
   }
 
-    protected function modify(Authors $authors)
+    protected function modify(Author $author)
     {
       $requete = $this->dao->prepare('UPDATE authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, pseudo = :pseudo, dateofbirth = :dateofbirth, dateModif = NOW() WHERE id = :id');
       
-      $requete->bindValue(':firstname', $authors->firstname());
-      $requete->bindValue(':lastname', $authors->lastname());
-      $requete->bindValue(':lastname', $authors->lastname());
-      $requete->bindValue(':pwd', $authors->pwd());
-      $requete->bindValue(':dateofbirth', $authors->dateofbirth());
-      $requete->bindValue(':id', $authors->id(), \PDO::PARAM_INT);
+      $requete->bindValue(':firstname', $author->firstname());
+      $requete->bindValue(':lastname', $author->lastname());
+      $requete->bindValue(':lastname', $author->lastname());
+      $requete->bindValue(':pwd', $author->pwd());
+      $requete->bindValue(':dateofbirth', $author->dateofbirth());
+      $requete->bindValue(':id', $author->id(), \PDO::PARAM_INT);
       
       $requete->execute();
     }

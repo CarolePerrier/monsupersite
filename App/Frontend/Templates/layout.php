@@ -26,7 +26,7 @@
           <li><a href="/admin/LogOut/"/>Logout</li>
           <?php if ($user->isAuthenticatedAdmin()) { ?>
           <li><a href="/admin/author-insert.html"/>New Author</li>
-          <?php } } ?>
+          <?php  } } ?>
         </ul>
       </nav>
       
