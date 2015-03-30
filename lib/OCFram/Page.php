@@ -12,7 +12,7 @@ class Page extends ApplicationComponent
     {
       throw new \InvalidArgumentException('Le nom de la variable doit être une chaine de caractères non nulle');
     }
-
+    
     $this->vars[$var] = $value;
   }
 

@@ -11,7 +11,7 @@ use \OCFram\FormHandler;
 
 class AuthorController extends BackController
 {
-  public function executeIndex(HTTPRequest $request)
+  public function executeAuthor(HTTPRequest $request)
   {
     $this->page->addVar('title', 'Gestion des auteurs');
 
@@ -43,7 +43,8 @@ class AuthorController extends BackController
         'firstname' => $request->postData('firstname'),
         'lastname' => $request->postData('lastname'),
         'dateofbirth' => $request->postData('dateofbirth'),
-        'pseudo' => $request->postData('pseudo')
+        'pseudo' => $request->postData('pseudo'),
+        'Mot de passe' => $request->postData('pwd')
       ]);
 
       if ($request->getExists('id'))
@@ -64,7 +65,7 @@ class AuthorController extends BackController
       }
     }
     
-    $formBuilder = new NewsFormBuilder($author);
+    $formBuilder = new AuthorsFormBuilder($author);
     $formBuilder->build();
 
     $form = $formBuilder->form();
@@ -80,56 +81,50 @@ class AuthorController extends BackController
     $this->page->addVar('form', $form->createView());
   }
 
-  public function executeUpdateNews(HTTPRequest $request)
+  public function executeUpdateAuthors(HTTPRequest $request)
   {
-    $this->page->addVar('title', 'Modification d\'une news');
+    $this->page->addVar('title', 'Modification d\'un auteur');
 
     if ($request->method() == 'POST')
     {
-      $news = new News([
+      $news = new Author([
         'id' => $request->getData('id'),
-        'titre' => $request->postData('titre'),
-        'auteur' => $request->postData('news_fk_author'),
-        'contenu' => $request->postData('contenu')
+        'firstname' => $request->postData('firstname'),
+        'lastname' => $request->postData('lastname'),
+        'registrationdate' => $request->postData('registrationdate'),
+        'dateofbirth' => $request->postData('dateofbirth'),
+        'dateModif' => $request->postData('dateModif'),
+        'pwd' => $request->postData('pwd'),
+        'pseudo' => $request->postData('pseudo')
       ]);
     }
     else
     {
-      $news = $this->managers->getManagerOf('News')->get($request->getData('id'));
+      $author = $this->managers->getManagerOf('Authors')->get($request->getData('id'));
     }
 
-    $formBuilder = new NewsFormBuilder($news);
+    $formBuilder = new AuthorFormBuilder($author);
     $formBuilder->build();
 
     $form = $formBuilder->form();
 
     if ($request->method() == 'POST' && $form->isValid())
     {
-      $this->managers->getManagerOf('News')->save($news);
-      $this->app->user()->setFlash('La news a bien été modifiée');
+      $this->managers->getManagerOf('Authors')->save($author);
+      $this->app->user()->setFlash('L\'auteur a bien été modifiée');
       $this->app->httpResponse()->redirect('/admin/');
     }
 
     $this->page->addVar('form', $form->createView());
   }
 
-  public function executeDeleteNews(HTTPRequest $request)
-  {
-    $this->managers->getManagerOf('News')->delete($request->getData('id'));
-    
-    $this->app->user()->setFlash('La News a bien été supprimée !');
-    
-    $this->app->httpResponse()->redirect('.');
-  }
-
   public function executeDelete(HTTPRequest $request)
   {
-    $newsId = $request->getData('id');
+    $authorId = $request->getData('id');
     
     $this->managers->getManagerOf('Authors')->delete($authorId);
-    $this->managers->getManagerOf('News')->deleteFromNews($newsId);
 
-    $this->app->user()->setFlash('La news a bien été supprimée !');
+    $this->app->user()->setFlash('L\'auteur a bien été supprimée !');
 
     $this->app->httpResponse()->redirect('.');
   }

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <routes>
   <route url="/admin/" module="News" action="index" />
+  <!--<route url="/admin/" module="Author" action="index" />-->
   <route url="/admin/LogOut/" module="LogOut" action="LogOut" />  
-  <route url="/admin/AddAuthor/" module="Author" action="insert" />
+  <!--<route url="/admin/author-insert\.html/" module="Author" action="insert" />-->
   <route url="/admin/news-insert\.html" module="News" action="insert" />
   <route url="/admin/news-update-([0-9]+)\.html" module="News" action="update" vars="id" />
   <route url="/admin/news-delete-([0-9]+)\.html" module="News" action="delete" vars="id" />
+  <!--<route url="/admin/author-update-([0-9]+)\.html" module="Author" action="update" vars="id" />-->
+  <!--<route url="/admin/author-delete-([0-9]+)\.html" module="Author" action="delete" vars="id" />-->
   <route url="/admin/comment-update-([0-9]+)\.html" module="News" action="updateComment" vars="id" />
   <route url="/admin/comment-delete-([0-9]+)\.html" module="News" action="deleteComment" vars="id" />
 </routes>

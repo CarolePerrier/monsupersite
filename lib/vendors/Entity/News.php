@@ -17,11 +17,6 @@ class News extends Entity
   const CONTENU_INVALIDE = 3;
 
 
-  public function setAuthor($author)
-  {
-    $this->author = (int) $author;
-  }
-
   public function isValid()
   {
     return !(empty($this->auteur) || empty($this->titre) || empty($this->contenu));
@@ -29,6 +24,11 @@ class News extends Entity
 
 
   // SETTERS //
+
+  public function setAuthor($authorId)
+  {
+    $this->authorId = (int) $authorId;
+  }
 
   public function setAuteur($auteur)
   {
@@ -71,6 +71,11 @@ class News extends Entity
   }
 
   // GETTERS //
+
+  public function authorId()
+  {
+    return $this->authorId;
+  }
 
   public function auteur()
   {

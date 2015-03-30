@@ -28,6 +28,11 @@ class User
     return isset($_SESSION['auth']) && $_SESSION['auth'] === true;
   }
 
+  public function isAuthenticatedAdmin()
+  {
+    return isset($_SESSION['admin']) && $_SESSION['admin'] === true;
+  }
+
   public function setAttribute($attr, $value)
   {
     $_SESSION[$attr] = $value;
@@ -41,6 +46,16 @@ class User
     }
 
     $_SESSION['auth'] = $authenticated;
+  }
+
+  public function setAuthenticatedAdmin($authenticated = true)
+  {
+    if (!is_bool($authenticated))
+    {
+      throw new \InvalidArgumentException('La valeur spécifiée à la méthode User::setAuthenticatedAdmin() doit être un boolean');
+    }
+
+    $_SESSION['admin'] = $authenticated;
   }
 
   public function setFlash($value)

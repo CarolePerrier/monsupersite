@@ -7,7 +7,7 @@ class AuthorManagerPDO extends AuthorManager
 {
   public function getList($debut = -1, $limite = -1)
   {
-    $sql = 'SELECT id, firstname, lastname, pseudo, registrationdate, dateofbirth, datemodif FROM authors ORDER BY id DESC';
+    $sql = 'SELECT id, firstname, lastname, pseudo, registrationdate, dateofbirth, dateModif FROM authors ORDER BY id DESC';
     
     if ($debut != -1 || $limite != -1)
     {
@@ -29,7 +29,13 @@ class AuthorManagerPDO extends AuthorManager
     $requete->execute();
     
     $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Author');
-    
+    if ($author = $requete->fetch())
+    {
+      $author->setDateAjout(new \DateTime($author->registrationdate()));
+      $news->setDateModif(new \DateTime($author->dateModif()));
+      
+      return $author;
+    }
     return null;
   }
 
@@ -40,10 +46,11 @@ class AuthorManagerPDO extends AuthorManager
 
   protected function add(Authors $authors)
   {
-    $requete = $this->dao->prepare('INSERT INTO authors SET firstname = :firstname, lastname = :lastname, pseudo = :pseudo, registrationdate = NOW(), dateofbirth = :dateofbirth, datemodif = NOW()');
+    $requete = $this->dao->prepare('INSERT INTO authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, pseudo = :pseudo, registrationdate = NOW(), dateofbirth = :dateofbirth, dateModif = NOW()');
     
     $requete->bindValue(':firstname', $authors->firstname());
     $requete->bindValue(':lastname', $authors->lastname());
+    $requete->bindValue(':pwd', $authors->pwd());
     $requete->bindValue(':pseudo', $authors->pseudo());
     $requete->bindValue(':dateofbirth', $authors->dateofbirth());
     
@@ -52,11 +59,12 @@ class AuthorManagerPDO extends AuthorManager
 
     protected function modify(Authors $authors)
     {
-      $requete = $this->dao->prepare('UPDATE authors SET auteur = :auteur, titre = :titre, contenu = :contenu, dateofbirth = :dateofbirth, dateModif = NOW() WHERE id = :id');
+      $requete = $this->dao->prepare('UPDATE authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, pseudo = :pseudo, dateofbirth = :dateofbirth, dateModif = NOW() WHERE id = :id');
       
-      $requete->bindValue(':titre', $authors->titre());
-      $requete->bindValue(':auteur', $authors->auteur());
-      $requete->bindValue(':contenu', $authors->contenu());
+      $requete->bindValue(':firstname', $authors->firstname());
+      $requete->bindValue(':lastname', $authors->lastname());
+      $requete->bindValue(':lastname', $authors->lastname());
+      $requete->bindValue(':pwd', $authors->pwd());
       $requete->bindValue(':dateofbirth', $authors->dateofbirth());
       $requete->bindValue(':id', $authors->id(), \PDO::PARAM_INT);
       

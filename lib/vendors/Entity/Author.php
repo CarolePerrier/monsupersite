@@ -9,16 +9,19 @@ class Author extends Entity
             $lastname,
             $registrationdate,
             $dateofbirth,
+            $dateModif,
+            $pwd,
             $pseudo;
 
   const PRENOM_INVALIDE         = 1;
   const NOM_INVALIDE            = 2;
   const DATE_NAISSANCE_INVALIDE = 3;
-  const PSEUDO_INVALIDE = 4;
+  const PSEUDO_INVALIDE         = 4;
+  const PWD_INVALIDE            = 5;
 
   public function isValid()
   {
-    return !(empty($this->firstname) || empty($this->lastname) || empty($this->dateofbirth));
+    return !(empty($this->firstname) || empty($this->lastname) || empty($this->dateofbirth) || empty($this->pwd));
   }
 
   public function setFirsname($firstname)
@@ -29,6 +32,15 @@ class Author extends Entity
     }
 
     $this->firstname = $firstname;
+  }
+
+  public function setPwd($pwd)
+  {
+    if (!is_string($pwd) || empty($pwd))
+    {
+      $this->erreurs[] = self::PWD_INVALIDE;
+    }
+    $this->pwd = $pwd;
   }
 
   public function setLastname($lastname)
@@ -61,9 +73,19 @@ class Author extends Entity
     return $this->firstname;
   }
 
+  public function pwd()
+  {
+    return $this->pwd;
+  }
+
   public function lastname()
   {
     return $this->lastname;
+  }
+
+  public function pseudo()
+  {
+    return $this->pseudo;
   }
 
   public function registrationdate()

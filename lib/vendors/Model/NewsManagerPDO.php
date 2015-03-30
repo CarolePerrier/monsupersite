@@ -13,7 +13,7 @@ class NewsManagerPDO extends NewsManager
     {
       $sql .= ' LIMIT '.(int) $limite.' OFFSET '.(int) $debut;
     }
-    
+    var_dump($sql);
     $requete = $this->dao->query($sql);
     $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\News');
     
@@ -32,7 +32,7 @@ class NewsManagerPDO extends NewsManager
 
   public function getUnique($id)
   {
-    $requete = $this->dao->prepare('SELECT id, news_fk_author, titre, contenu, dateAjout, dateModif FROM news WHERE id = :id');
+    $requete = $this->dao->prepare('SELECT id, news_fk_author, titre, contenu FROM news WHERE id = :id');
     $requete->bindValue(':id', (int) $id, \PDO::PARAM_INT);
     $requete->execute();
     
@@ -55,9 +55,16 @@ class NewsManagerPDO extends NewsManager
   protected function add(News $news)
   {
     $requete = $this->dao->prepare('INSERT INTO news SET news_fk_author = :auteur, titre = :titre, contenu = :contenu, dateAjout = NOW(), dateModif = NOW()');
+    //Get the AuthorId from his pseudo
+    $requeteAuteurId = $this->dao->prepare('SELECT id FROM Authors WHERE pseudo = :pseudo');
+    $requeteAuteurId->bindValue(':pseudo', $auteur->pseudo());
+    $requeteAuteurId->execute();
     
+    if ($AuteurId = $requeteAuteurId->fetch())
+    {
+      $requete->bindValue(':auteur', $AuteurId, \PDO::PARAM_INT);
+    }
     $requete->bindValue(':titre', $news->titre());
-    $requete->bindValue(':auteur', $news->auteur(), \PDO::PARAM_INT);
     $requete->bindValue(':contenu', $news->contenu());
     
     $requete->execute();

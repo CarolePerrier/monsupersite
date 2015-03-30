@@ -24,14 +24,13 @@ abstract class Application
 
     $xml = new \DOMDocument;
     $xml->load(__DIR__.'/../../App/'.$this->name.'/Config/routes.xml');
-
+    //get all the path in the XML file
     $routes = $xml->getElementsByTagName('route');
 
     // On parcourt les routes du fichier XML.
     foreach ($routes as $route)
     {
       $vars = [];
-
       // On regarde si des variables sont présentes dans l'URL.
       if ($route->hasAttribute('vars'))
       {

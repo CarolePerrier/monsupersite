@@ -9,10 +9,15 @@ class LogOutController extends BackController
   public function executeLogOut(HTTPRequest $request)
   {
     $this->page->addVar('title', 'LogOut');
-    if ($this->app->user()->isAuthenticated() == true)
+    if ($this->app->user()->isAuthenticatedAdmin() == true)
     {
       $this->app->user()->setAuthenticated(false);
-      $this->app->httpResponse()->redirect('/admin/');
+      $this->app->httpResponse()->redirect('/');
+    }
+    elseif ($this->app->user()->isAuthenticated() == true)
+    {
+      $this->app->user()->setAuthenticated(false);
+      $this->app->httpResponse()->redirect('/test/');
     }
   }
 }

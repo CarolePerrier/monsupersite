@@ -18,6 +18,7 @@ class HTTPResponse
 
   public function redirect404()
   {
+    var_dump($this->app);
     $this->page = new Page($this->app);
     $this->page->setContentFile(__DIR__.'/../../Errors/404.html');
     

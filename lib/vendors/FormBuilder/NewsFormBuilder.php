@@ -12,7 +12,7 @@ class NewsFormBuilder extends FormBuilder
   public function build()
   {
     $this->form->add(new StringField([
-        'label' => 'Auteur',
+        'label' => 'Pseudo',
         'name' => 'auteur',
         'maxLength' => 20,
         'validators' => [
