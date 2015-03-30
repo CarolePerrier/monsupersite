@@ -23,9 +23,9 @@
           <?php if ($user->isAuthenticated()) { ?>
           <li><a href="/admin/">Admin</a></li>
           <li><a href="/admin/news-insert.html">Ajouter une news</a></li>
-          <li><a href="/admin/LogOut/"/>Logout</li>
+          <li><a href="/admin/LogOut/">Logout</a></li>
           <?php if ($user->isAuthenticatedAdmin()) { ?>
-          <li><a href="/admin/author-insert.html"/>New Author</li>
+          <li><a href="/admin/author-insert.html">New Author</a></li>
           <?php  } } ?>
         </ul>
       </nav>
