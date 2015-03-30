@@ -26,7 +26,7 @@ class ConnexionController extends BackController
       
       if ($author != null)
       {
-        if ($author->authors_fk_type == '1')
+        if ($author->authors_fk_type == 1)
         {
           echo 'test de la variable auteur';
           
