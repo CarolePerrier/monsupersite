@@ -32,7 +32,7 @@ class ConnexionController extends BackController
           
           $this->app->user()->setAuthenticatedAdmin(true);
           $this->app->httpResponse()->redirect('/admin/');
-          die;*
+          die;
 
         }
         else
