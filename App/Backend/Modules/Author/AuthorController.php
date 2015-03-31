@@ -72,8 +72,6 @@ class AuthorController extends BackController
 
     $form = $formBuilder->form();
 
-    var_dump($form->isValid());
-
     // On récupère le gestionnaire de formulaire (le paramètre de getManagerOf() est bien entendu à remplacer).
     $formHandler = new \OCFram\FormHandler($form, $this->managers->getManagerOf('Authors'), $request);
     if ($formHandler->process())
@@ -142,10 +140,7 @@ public function executeShow(HTTPRequest $request)
     {
       $this->app->httpResponse()->redirect404();
     }
-    var_dump($authors);
     $this->page->addVar('authors', $authors);
-
-    $this->page->addVar('pseudo', $authors->pseudo);
     // $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
   }
 }

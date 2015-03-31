@@ -15,9 +15,6 @@ class Form
   {
     $attr = $field->name(); // On récupère le nom du champ.
     $field->setValue($this->entity->$attr()); // On assigne la valeur correspondante au champ.
-    /*var_dump('Form Add');
-    var_dump($attr);
-    var_dump($this->entity->$attr());*/
 
     $this->fields[] = $field; // On ajoute le champ passé en argument à la liste des champs.
     return $this;

@@ -61,11 +61,12 @@ abstract class NewsManager extends Manager
    */
   abstract public function delete($id);
   
+
   /**
-   * Méthode permettant d'obtenir un commentaire spécifique.
-   * @param $id L'identifiant du commentaire
-   * @return Comment
+   * Méthode permettant d'obtenir la liste des news publiées par un membre'.
+   * @param $id int L'identifiant de l'auteur
+   * @return $listnews array 
    */
-  //abstract public function get($id);
+  abstract public function getListAuthor($authorId);
 }
 ?>

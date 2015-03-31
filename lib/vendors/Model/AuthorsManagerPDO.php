@@ -33,6 +33,24 @@ class AuthorsManagerPDO extends AuthorsManager
     return null;
   }
 
+  public function getUniqueId($id)
+  {
+    $requete = $this->dao->prepare('SELECT pseudo FROM authors WHERE id = :id');
+
+    $requete->bindValue(':id', (string) $id, \PDO::PARAM_INT);
+
+    $requete->execute();
+
+    $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Author');
+
+    if ($author = $requete->fetch())
+    {
+      return $author;
+    }
+
+    return null;
+  }
+
   public function count()
   {
     return $this->dao->query('SELECT COUNT(*) FROM authors')->fetchColumn();

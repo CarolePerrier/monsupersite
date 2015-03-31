@@ -29,6 +29,20 @@ class NewsManagerPDO extends NewsManager
     return $listeNews;
   }
 
+  public function getListAuthor($authorId)
+  {
+    $requete = $this->dao->prepare('SELECT id, news_fk_author, auteur, titre, contenu, dateAjout, dateModif FROM news WHERE news_fk_author = :authorId ORDER BY id DESC');
+    
+    $requete->bindValue(':authorId', $authorId);
+    $requete->execute();
+    $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\News');
+    $listeNews = $requete->fetchAll();
+    
+    $requete->closeCursor();
+    
+    return $listeNews;
+  }
+
   public function getUnique($id)
   {
     $requete = $this->dao->prepare('SELECT id, news_fk_author, auteur, titre, contenu FROM news WHERE id = :id');
