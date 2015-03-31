@@ -9,10 +9,10 @@ class DateValidator extends Validator
   {
 
     $numberofparts = 3;
-    $test_arr  = explode('/', $value);
+    $test_arr  = explode('-', $value);
     if (count($test_arr) == $numberofparts) 
     {
-      return checkdate($test_arr[0], $test_arr[1], $test_arr[2]);
+      return checkdate($test_arr[1], $test_arr[2], $test_arr[0]);
     } 
       else 
     {

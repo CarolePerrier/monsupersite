@@ -37,14 +37,15 @@ class AuthorController extends BackController
   public function processForm(HTTPRequest $request)
   { 
 
+
     if ($request->method() == 'POST')
     {
       $author = new Author([
         'firstname' => $request->postData('firstname'),
         'lastname' => $request->postData('lastname'),
         'dateofbirth' => $request->postData('dateofbirth'),
-        'pseudo' => $request->postData('pseudo'),
-        'Mot de passe' => $request->postData('pwd')
+        'auteur' => $request->postData('auteur'),
+        'pwd' => $request->postData('pwd')
       ]);
       if ($request->getExists('id'))
       {
@@ -69,6 +70,8 @@ class AuthorController extends BackController
     $formBuilder->build();
 
     $form = $formBuilder->form();
+
+    var_dump($form->isValid());
 
     // On récupère le gestionnaire de formulaire (le paramètre de getManagerOf() est bien entendu à remplacer).
     $formHandler = new \OCFram\FormHandler($form, $this->managers->getManagerOf('Authors'), $request);
