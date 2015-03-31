@@ -32,10 +32,9 @@ abstract class AuthorsManager extends Manager
   
   /**
    * Méthode permettant de récupérer une liste d'auteurs.
-   * @param $authors L'auteur sur lequelle on veut récupérer les news
    * @return array
    */
-  abstract public function getList($author);
+  abstract public function getList();
 
   abstract public function getUnique($login, $password);
 

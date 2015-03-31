@@ -44,8 +44,9 @@ class AuthorController extends BackController
         'firstname' => $request->postData('firstname'),
         'lastname' => $request->postData('lastname'),
         'dateofbirth' => $request->postData('dateofbirth'),
-        'auteur' => $request->postData('auteur'),
-        'pwd' => $request->postData('pwd')
+        'pseudo' => $request->postData('pseudo'),
+        'pwd' => $request->postData('pwd'),
+        'type' => $request->postData('type'),
       ]);
       if ($request->getExists('id'))
       {
@@ -98,7 +99,7 @@ class AuthorController extends BackController
         'dateofbirth' => $request->postData('dateofbirth'),
         'dateModif' => $request->postData('dateModif'),
         'pwd' => $request->postData('pwd'),
-        'auteur' => $request->postData('auteur')
+        'pseudo' => $request->postData('pseudo'),
       ]);
     }
     else
@@ -135,18 +136,17 @@ class AuthorController extends BackController
 //List of all authors registered in the database
 public function executeShow(HTTPRequest $request)
   {
-    $author = $this->managers->getManagerOf('Authors')->getList($request->getData('id'));
-
-    if (empty($author))
+    $authors = $this->managers->getManagerOf('Authors')->getList();
+    
+    if (empty($authors))
     {
       $this->app->httpResponse()->redirect404();
     }
-    
-    $this->page->addVar('author', $this->managers->getManagerOf('Authors')->getList($request->getData('id')));
+    var_dump($authors);
+    $this->page->addVar('authors', $authors);
+
+    $this->page->addVar('pseudo', $authors->pseudo);
     // $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
   }
 }
-?>
-
-<?php
 

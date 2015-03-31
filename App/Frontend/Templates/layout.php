@@ -23,11 +23,12 @@
           <?php if ($user->isAuthenticated()) { ?>
           <li><a href="/admin/">Admin</a></li>
           <li><a href="/admin/news-insert.html">Add news</a></li>
-          <li><a href="/admin/LogOut/">Logout</a></li>
           <li><a href="/admin/author-show.html">List of Autors</a></li>
           <?php if ($user->isAuthenticatedAdmin()) { ?>
           <li><a href="/admin/author-insert.html">Add Author</a></li>
-          <?php  } } ?>
+          <?php  } ?>
+          <li><a href="/admin/LogOut/">Logout</a></li>
+          <?php } ?>
         </ul>
       </nav>
       

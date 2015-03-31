@@ -4,6 +4,7 @@ namespace FormBuilder;
 use \OCFram\FormBuilder;
 use \OCFram\StringField;
 use \OCFram\TextField;
+use \OCFram\NumberField;
 use \OCFram\DateField;
 use \OCFram\MaxLengthValidator;
 use \OCFram\NotNullValidator;
@@ -15,11 +16,11 @@ class AuthorFormBuilder extends FormBuilder
   {
     $this->form->add(new StringField([
         'label' => 'Auteur',
-        'name' => 'auteur',
+        'name' => 'pseudo',
         'maxLength' => 50,
         'validators' => [
           new MaxLengthValidator('Le Auteur de l\'auteur spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier le Auteur de l\'auteur'),
+          new NotNullValidator('Merci de spécifier le pseudo de l\'auteur'),
           //new ExistingAuthor('Auteur invalide'),
         ],
        ]))
@@ -56,9 +57,14 @@ class AuthorFormBuilder extends FormBuilder
         'maxLength' => 50,
         'validators' => [
           new MaxLengthValidator('Le mot de passe spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier le prénom de l\'auteur'),
+          new NotNullValidator('Merci de spécifier un mot de passe'),
         ],
-       ]));
+       ]))
+      ->add(new NumberField([
+        'label' => 'Type',
+        'name' => 'type',
+       ])) 
+       ;
   }
 }
 ?>

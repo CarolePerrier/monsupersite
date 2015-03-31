@@ -54,10 +54,10 @@ class NewsManagerPDO extends NewsManager
 
   protected function add(News $news)
   {
-    $requete = $this->dao->prepare('INSERT INTO news SET news_fk_author = :auteurId, auteur = :auteurNews, titre = :titre, contenu = :contenu, dateAjout = NOW(), dateModif = NOW()');
+    $requete = $this->dao->prepare('INSERT INTO news SET news_fk_author = :auteurId, pseudo = :auteurNews, titre = :titre, contenu = :contenu, dateAjout = NOW(), dateModif = NOW()');
     //Get the AuthorId from his auteur
-    $requeteAuteurId = $this->dao->prepare('SELECT id FROM Authors WHERE auteur = :auteur');
-    $requeteAuteurId->bindValue(':auteur', $news->auteur());
+    $requeteAuteurId = $this->dao->prepare('SELECT id FROM Authors WHERE pseudo = :pseudo');
+    $requeteAuteurId->bindValue(':pseudo', $news->auteur());
     $requeteAuteurId->execute();
 
 

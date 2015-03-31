@@ -19,13 +19,13 @@ class News extends Entity
 
   public function isValid()
   {
-    return !(empty($this->auteur) || empty($this->titre) || empty($this->contenu));
+    return !(empty($this->pseudo) || empty($this->titre) || empty($this->contenu));
   }
 
 
   // SETTERS //
 
-  public function setAuthor($authorId)
+  public function setAuthorId($authorId)
   {
     $this->authorId = (int) $authorId;
   }
