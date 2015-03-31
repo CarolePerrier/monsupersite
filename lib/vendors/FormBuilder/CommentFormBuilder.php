@@ -4,6 +4,8 @@ namespace FormBuilder;
 use \OCFram\FormBuilder;
 use \OCFram\StringField;
 use \OCFram\TextField;
+use \OCFram\CheckBoxField;
+use \OCFram\EmailField;
 use \OCFram\MaxLengthValidator;
 use \OCFram\NotNullValidator;
 
@@ -28,6 +30,17 @@ class CommentFormBuilder extends FormBuilder
         'validators' => [
           new NotNullValidator('Merci de spécifier votre commentaire'),
         ],
+       ]))
+       ->add(new EmailField([
+        'label' => 'Email',
+        'name' => 'email',
+        'validators' => [
+          new NotNullValidator('Merci de spécifier votre email'),
+        ],
+       ]))
+       ->add(new CheckBoxField([
+        'label' => 'Etre averti par mail des nouveaux commentaires',
+        'name' => 'avertissement',
        ]));
   }
 }

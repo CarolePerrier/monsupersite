@@ -25,7 +25,7 @@ class CommentsManagerPDO extends CommentsManager
       throw new \InvalidArgumentException('L\'identifiant de la news passé doit être un nombre entier valide');
     }
     
-    $q = $this->dao->prepare('SELECT id, news, auteur, contenu, date FROM comments WHERE news = :news');
+    $q = $this->dao->prepare('SELECT id, email, news, auteur, contenu, date FROM comments WHERE news = :news');
     $q->bindValue(':news', $news, \PDO::PARAM_INT);
     $q->execute();
     
@@ -59,6 +59,21 @@ class CommentsManagerPDO extends CommentsManager
     $q->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Comment');
  
     return $q->fetch();
+  }
+
+  public function getNewsCommentedByEmail($email)
+  {
+    $q = $this->dao->prepare('SELECT N.id, N.titre, N.contenu, N.dateAjout
+                                FROM news AS N
+                                INNER JOIN comments AS C ON C.news = N.id
+                                WHERE strcmp(C.email, :email) = 0');
+    $q->bindValue(':email', $email);
+    $q->execute();
+    $q->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\news');
+ 
+    $news = $q->fetchAll();
+    
+    return $news;
   }
 }
 ?>

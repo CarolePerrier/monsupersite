@@ -1,4 +1,4 @@
-<p>Par <em><?= $news['news_fk_author'] ?></em>, le <?= $news['dateAjout']->format('d/m/Y à H\hi') ?></p>
+<p>Par <em><?= $news['auteur'] ?></em>, le <?= $news['dateAjout']->format('d/m/Y à H\hi') ?></p>
 <h2><?= $news['titre'] ?></h2>
 <p><?= nl2br($news['contenu']) ?></p>
 
@@ -21,7 +21,9 @@ foreach ($comments as $comment)
 ?>
 <fieldset>
   <legend>
-    Posté par <strong><?= htmlspecialchars($comment['pseudo']) ?></strong> le <?= $comment['date']->format('d/m/Y à H\hi') ?>
+  	Posté par 
+  	<a href="/news-commented-by/<?= $comment['email'] ?>.html"><strong><?= htmlspecialchars($comment['auteur']) ?></strong></a>
+     le <?= $comment['date']->format('d/m/Y à H\hi') ?>
     <?php if ($user->isAuthenticated()) { ?> -
       <a href="admin/comment-update-<?= $comment['id'] ?>.html">Modifier</a> |
       <a href="admin/comment-delete-<?= $comment['id'] ?>.html">Supprimer</a>

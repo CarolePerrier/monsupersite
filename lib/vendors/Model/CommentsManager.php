@@ -37,6 +37,13 @@ abstract class CommentsManager extends Manager
    */
   abstract public function getListOf($news);
 
+
+  /**
+   * Méthode permettant de récupérer une liste de news commentées par un email.
+   * @param $email ayant commenté les news
+   * @return array
+   */
+  abstract public function getNewsCommentedByEmail($email);
   /**
    * Méthode permettant de supprimer un commentaire.
    * @param $id L'identifiant du commentaire à supprimer

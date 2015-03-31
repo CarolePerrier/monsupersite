@@ -135,9 +135,6 @@ class NewsController extends BackController
   {
     $this->page->addVar('title', 'Liste des news rédigées par l\'auteur');
     $this->page->addVar('listeNews', $this->managers->getManagerOf('News')->getListAuthor($request->getData('id')));
-    // var_dump($request->getData('id'));
-    // var_dump($this->managers->getManagerOf('Authors')->getUniqueId($request->getData('id')));
-
     $this->page->addVar('authorId', $this->managers->getManagerOf('Authors')->getUniqueId($request->getData('id')));
   }
 }

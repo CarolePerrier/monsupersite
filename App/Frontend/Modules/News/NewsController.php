@@ -39,36 +39,23 @@ class NewsController extends BackController
     $this->page->addVar('listeNews', $listeNews);
   }
 
-  public function executeShow(HTTPRequest $request)
-  {
-    $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
-    
-    if (empty($news))
-    {
-      $this->app->httpResponse()->redirect404();
-    }
-    
-    $this->page->addVar('title', $news->titre());
-    $this->page->addVar('news', $news);
-    $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
-  }
-
   public function executeInsertComment(HTTPRequest $request)
   {
     // Si le formulaire a été envoyé.
     if ($request->method() == 'POST')
     {
       $comment = new Comment([
-        'news' => $request->getData('news'),
-        'auteur' => $request->postData('auteur'),
-        'contenu' => $request->postData('contenu')
+        'news'    => $request->getData('news'),
+        'auteur'  => $request->postData('auteur'),
+        'contenu' => $request->postData('contenu'),
+        'email'   => $request->postData('email'),
       ]);
     }
     else
     {
       $comment = new Comment;
     }
-
+      
     $formBuilder = new CommentFormBuilder($comment);
     $formBuilder->build();
 
@@ -87,6 +74,28 @@ class NewsController extends BackController
     $this->page->addVar('title', 'Ajout d\'un commentaire');
   }
 
-  
+    public function executeShow(HTTPRequest $request)
+    {
+      $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
+      
+      if (empty($news))
+      {
+        $this->app->httpResponse()->redirect404();
+      }
+      
+      $this->page->addVar('title', $news->titre());
+      $this->page->addVar('news', $news);
+      $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
+    }
+
+
+  public function executegetNewsCommentedByEmail(HTTPRequest $request)
+  {
+    $this->page->addVar('title', 'Liste des news rédigées par le détenteur de l\'email');
+    
+    $this->page->addVar('email', $request->getData('email'));
+    
+    $this->page->addVar('listeNews', $this->managers->getManagerOf('Comments')->getNewsCommentedByEmail($request->getData('email')));
+  }
 }
-?>
+?>  
