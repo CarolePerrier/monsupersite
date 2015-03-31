@@ -20,7 +20,7 @@ class ExistingAuthorValidator extends Validator
   
   public function isValid($value)
   {
-   return $this->getManagerOf('Authors')->IsValidPseudo($value);
+   return $this->getManagerOf('Authors')->IsValidAuteur($value);
   }
 }
 ?>

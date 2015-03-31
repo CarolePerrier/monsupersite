@@ -14,13 +14,13 @@ class AuthorFormBuilder extends FormBuilder
   public function build()
   {
     $this->form->add(new StringField([
-        'label' => 'Pseudo',
-        'name' => 'pseudo',
+        'label' => 'Auteur',
+        'name' => 'auteur',
         'maxLength' => 50,
         'validators' => [
-          new MaxLengthValidator('Le pseudo de l\'auteur spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier le pseudo de l\'auteur'),
-          //new ExistingAuthor('Pseudo invalide'),
+          new MaxLengthValidator('Le Auteur de l\'auteur spécifié est trop long (50 caractères maximum)', 50),
+          new NotNullValidator('Merci de spécifier le Auteur de l\'auteur'),
+          //new ExistingAuthor('Auteur invalide'),
         ],
        ]))
        ->add(new StringField([

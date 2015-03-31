@@ -19,7 +19,7 @@ class NewsFormBuilder extends FormBuilder
         'validators' => [
           new MaxLengthValidator('L\'auteur spécifié est trop long (50 caractères maximum)', 50),
           new NotNullValidator('Merci de spécifier l\'auteur de la news'),
-          //new ExistingAuthorValidator('Pseudo invalide'),
+          //new ExistingAuthorValidator('Auteur invalide'),
         ],
        ]))
        ->add(new StringField([

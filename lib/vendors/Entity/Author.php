@@ -11,7 +11,7 @@ class Author extends Entity
             $dateofbirth,
             $dateModif,
             $pwd,
-            $pseudo;
+            $auteur;
 
   const PRENOM_INVALIDE         = 1;
   const NOM_INVALIDE            = 2;
@@ -24,7 +24,7 @@ class Author extends Entity
     return !(empty($this->firstname) || empty($this->lastname) || empty($this->dateofbirth) || empty($this->pwd));
   }
 
-  public function setFirsname($firstname)
+  public function setFirstname($firstname)
   {
     if (!is_string($firstname) || empty($firstname))
     {
@@ -68,6 +68,10 @@ class Author extends Entity
     $this->dateofbirth = $date;
   }
 
+  public function setAuteur($auteur) {
+    $this->auteur = $auteur;
+  } 
+
   public function firstname()
   {
     return $this->firstname;
@@ -83,9 +87,9 @@ class Author extends Entity
     return $this->lastname;
   }
 
-  public function pseudo()
+  public function auteur()
   {
-    return $this->pseudo;
+    return $this->auteur;
   }
 
   public function registrationdate()
