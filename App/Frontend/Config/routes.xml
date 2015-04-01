@@ -5,4 +5,5 @@
 	<route url="/commenter-([0-9]+)\.html" module="News" action="insertComment" vars="news" />
 	<route url="/author-([0-9]+)\.html" module="Author" action="index" vars="id" />
   	<route url="/news-commented-by/(.+)\.html" module="News" action="getNewsCommentedByEmail" vars="email" />
+	<route url="/author-([0-9]+)/(.+)-(.+)\.html" module="News" action="ListNewsOfAuthor" vars="id,firstname,lastename" />
 </routes>

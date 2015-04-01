@@ -15,7 +15,7 @@ class AuthorFormBuilder extends FormBuilder
   public function build()
   {
     $this->form->add(new StringField([
-        'label' => 'Auteur',
+        'label' => 'Pseudo',
         'name' => 'pseudo',
         'maxLength' => 50,
         'validators' => [

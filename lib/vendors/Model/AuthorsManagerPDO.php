@@ -35,7 +35,7 @@ class AuthorsManagerPDO extends AuthorsManager
 
   public function getUniqueId($id)
   {
-    $requete = $this->dao->prepare('SELECT pseudo FROM authors WHERE id = :id');
+    $requete = $this->dao->prepare('SELECT * FROM authors WHERE id = :id');
 
     $requete->bindValue(':id', (string) $id, \PDO::PARAM_INT);
 

@@ -131,6 +131,7 @@ class NewsController extends BackController
 
     $this->app->httpResponse()->redirect('.');
   }
+  
   public function executeListNewsOfAuthor(HTTPRequest $request)
   {
     $this->page->addVar('title', 'Liste des news rédigées par l\'auteur');

@@ -58,7 +58,7 @@ class AuthorController extends BackController
       // L'identifiant de l'auteur est transmis si on veut la modifier
       if ($request->getExists('id'))
       {
-        $news = $this->managers->getManagerOf('Authors')->getUnique($request->getData('id'));
+        $author = $this->managers->getManagerOf('Authors')->getUniqueId($request->getData('id'));
       }
       else
       {

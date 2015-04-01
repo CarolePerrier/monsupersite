@@ -12,9 +12,15 @@ class CommentsManagerPDO extends CommentsManager
     $q->bindValue(':news', $comment->news(), \PDO::PARAM_INT);
     $q->bindValue(':auteur', $comment->auteur());
     $q->bindValue(':contenu', $comment->contenu());
-    
     $q->execute();
-    
+    //If the comment's author checked the box : his email is added to newsd table with the news' Id 
+    if($comment->avertissement() == 1)
+    {
+      $request = $this->dao->prepare('INSERT INTO newsd SET email = :email, newsd_fk_news = :newsId');
+      $request->bindValue(':email' , $comment->email());
+      $request->bindValue(':newsId', $comment->news(), \PDO::PARAM_INT);
+      $request->execute();
+    }
     $comment->setId($this->dao->lastInsertId());
   }
   

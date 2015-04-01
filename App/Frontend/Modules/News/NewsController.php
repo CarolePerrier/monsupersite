@@ -45,10 +45,11 @@ class NewsController extends BackController
     if ($request->method() == 'POST')
     {
       $comment = new Comment([
-        'news'    => $request->getData('news'),
-        'auteur'  => $request->postData('auteur'),
-        'contenu' => $request->postData('contenu'),
-        'email'   => $request->postData('email'),
+        'news'          => $request->getData('news'),
+        'auteur'        => $request->postData('auteur'),
+        'contenu'       => $request->postData('contenu'),
+        'email'         => $request->postData('email'),
+        'avertissement' => $request->postData('avertissement')
       ]);
     }
     else
@@ -84,8 +85,10 @@ class NewsController extends BackController
       }
       
       $this->page->addVar('title', $news->titre());
+
       $this->page->addVar('news', $news);
       $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
+      $this->page->addVar('author', $this->managers->getManagerOf('Authors')->getUniqueId($news->news_fk_author));
     }
 
 
@@ -96,6 +99,13 @@ class NewsController extends BackController
     $this->page->addVar('email', $request->getData('email'));
     
     $this->page->addVar('listeNews', $this->managers->getManagerOf('Comments')->getNewsCommentedByEmail($request->getData('email')));
+  }
+
+  public function executeListNewsOfAuthor(HTTPRequest $request)
+  {
+    $this->page->addVar('title', 'Liste des news rédigées par l\'auteur');
+    $this->page->addVar('listeNews', $this->managers->getManagerOf('News')->getListAuthor($request->getData('id')));
+    $this->page->addVar('authorId', $this->managers->getManagerOf('Authors')->getUniqueId($request->getData('id')));
   }
 }
 ?>  
