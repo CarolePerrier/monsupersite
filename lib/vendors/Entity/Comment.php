@@ -87,8 +87,7 @@ class Comment extends Entity
 
   public function avertissement()
   {
-    $this->avertissement;
+    return $this->avertissement;
   }
-
 }
 ?>
