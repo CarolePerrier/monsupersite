@@ -13,7 +13,7 @@ use \OCFram\NotNullValidator;
 
 class CommentFormBuilder extends FormBuilder
 {
-  public function build()
+  public function build($value)
   {
     $this->form->add(new StringField([
         'label' => 'Auteur',
@@ -22,7 +22,6 @@ class CommentFormBuilder extends FormBuilder
         'validators' => [
           new MaxLengthValidator('L\'auteur spécifié est trop long (50 caractères maximum)', 50),
           new NotNullValidator('Merci de spécifier l\'auteur du commentaire'),
-          //new ExistingAuthorValidator('Pseudo Invalide'),
         ],
        ]))
        ->add(new TextField([

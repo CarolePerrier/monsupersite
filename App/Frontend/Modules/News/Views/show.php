@@ -15,7 +15,7 @@ if (empty($comments))
 <p>Aucun commentaire n'a encore été posté. Soyez le premier à en laisser un !</p>
 <?php
 }
-
+/*********************************************Comments*********************************************/
 foreach ($comments as $comment)
 {
 ?>
@@ -39,4 +39,25 @@ foreach ($comments as $comment)
 }
 ?>
 
-<p><a href="commenter-<?= $news['id'] ?>.html">Ajouter un commentaire</a></p>
+
+<html>
+    <body>
+      <div id="messages">
+          <!-- les messages du tchat -->
+          <?php
+               
+          ?>
+      </div>
+
+      <h2>Ajouter un commentaire</h2>
+      <form method="post">
+        <p>
+          <?= $form ?>
+          <input type="submit" name="submit" value="Commenter"/>
+      
+        </p>
+      </form>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+      <script src="main.js"></script>
+    </body>
+</html>

@@ -51,13 +51,7 @@ class AuthorController extends BackController
 
     if ($request->method() == 'POST')
     {
-      $salt = "$2y$14$";
-      for ($i = 0; $i < 22; $i++) 
-      {
-        $salt .= substr("./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", mt_rand(0, 63), 1);
-      }
-      // crypt($request->postData('password'), $author->salt);
-      // crypt($request->postData('passwordCheck'), $author->salt);
+
       $author = new Author([
         'firstname'   => $request->postData('firstname'),
         'lastname'    => $request->postData('lastname'),
@@ -67,7 +61,6 @@ class AuthorController extends BackController
         'pwdCheck'    => $request->postData('passwordCheck'),
         'type'        => $request->postData('type'),
         'email'       => $request->postData('email'),
-        'salt'        => $salt,
       ]);
       if ($request->getExists('id'))
       {
@@ -86,10 +79,11 @@ class AuthorController extends BackController
         $author = new Author;
       }
     }
+    $types = $this->managers->getManagerOf('Authors')->getTypes();
     
     $formBuilder = new AuthorFormBuilder($author);
 
-    $formBuilder->build(/*Passer les id de types*/);
+    $formBuilder->build($types);
 
     $form = $formBuilder->form();
 

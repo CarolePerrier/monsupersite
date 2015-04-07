@@ -24,7 +24,6 @@ class NewsController extends BackController
   public function executeInsert(HTTPRequest $request)
   {
     $this->processForm($request);
-
     $this->page->addVar('title', 'Ajout d\'une news');
   }
 
@@ -40,7 +39,7 @@ class NewsController extends BackController
     if ($request->method() == 'POST')
     {
       $news = new News([
-        'auteur' => $request->postData('auteur'),
+        'auteur' => $this->app->user()->getAttribute('login'),
         'titre' => $request->postData('titre'),
         'contenu' => $request->postData('contenu')
       ]);
@@ -62,9 +61,9 @@ class NewsController extends BackController
         $news = new News;        
       }
     }
-
+    $newsList = $this->managers->getManagerOf('Authors')->getList();
     $formBuilder = new NewsFormBuilder($news);
-    $formBuilder->build();
+    $formBuilder->build($newsList);
 
     $form = $formBuilder->form();
 

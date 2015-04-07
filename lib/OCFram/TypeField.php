@@ -3,7 +3,7 @@ namespace OCFram;
 
 class TypeField extends Field
 {
-  protected $type = [];
+  protected $types = [];
 
   public function buildWidget()
   {
@@ -18,19 +18,19 @@ class TypeField extends Field
     
     $widget .= '>';
 
-    foreach($this->type AS $type)
+    foreach($this->types AS $type)
     {
-    	
+    	   // var_dump($type);die;
        	//Utilise le tableau de valeurs
-       	$widget .= '<option value='.$type['value'].'>'.$type['print'].'</option>';
+       	$widget .= '<option value='.$type['BAY_id'].'>'.$type['BAY_description'].'</option>';
     }
     $widget .= '</select>';
     
     return $widget;
   }
-  public function setType($type)
+  public function setType($types)
   {
-  	$this->type = $type;
+  	$this->types = $types;
   }
   
 }

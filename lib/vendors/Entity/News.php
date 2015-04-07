@@ -10,7 +10,8 @@ class News extends Entity
             $titre,
             $contenu,
             $dateAjout,
-            $dateModif;
+            $dateModif,
+            $id;
 
   const AUTEUR_INVALIDE = 1;
   const TITRE_INVALIDE = 2;
@@ -19,7 +20,7 @@ class News extends Entity
 
   public function isValid()
   {
-    return !(empty($this->auteur) || empty($this->titre) || empty($this->contenu));
+    return !(empty($this->titre) || empty($this->contenu));
   }
 
 
@@ -100,6 +101,11 @@ class News extends Entity
   public function dateModif()
   {
     return $this->dateModif;
+  }
+
+  public function id()
+  {
+    return $this->id;
   }
 }
 ?>

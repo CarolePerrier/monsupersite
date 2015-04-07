@@ -58,7 +58,7 @@ class NewsController extends BackController
     }
       
     $formBuilder = new CommentFormBuilder($comment);
-    $formBuilder->build();
+    $formBuilder->build(NULL);
 
     $form = $formBuilder->form();
 
@@ -71,7 +71,7 @@ class NewsController extends BackController
       
       $authorList = $this->managers->getManagerOf('Comments')->getFollowersAuthors($comment->news());
 
-      $subject = 'Sujet';
+      $subject = 'Subject';
       $message = 'Comment on news you follow!';
       foreach($authorList as $author)
       {
@@ -100,6 +100,7 @@ class NewsController extends BackController
   {
     $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
     
+
    
     if (empty($news))
     {
@@ -111,6 +112,16 @@ class NewsController extends BackController
     $this->page->addVar('news', $news);
     $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
     $this->page->addVar('author', $this->managers->getManagerOf('Authors')->getUniqueId($news->news_fk_author));
+    $this->executeInsertComment($request);
+    
+
+    }
+    else
+      {
+        echo "Vous avez oublié de remplir un des champs !";
+    }
+        
+
   }
 
 

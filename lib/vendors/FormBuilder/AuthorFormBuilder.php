@@ -4,10 +4,12 @@ namespace FormBuilder;
 use \OCFram\FormBuilder;
 use \OCFram\StringField;
 use \OCFram\PasswordField;
-use \OCFram\PasswordValidator;
+use \OCFram\SameValidator;
 use \OCFram\TextField;
 use \OCFram\NumberField;
 use \OCFram\TypeField;
+
+use \OCFram\TypeValidator;
 use \OCFram\EmailField;
 use \OCFram\EmailValidator;
 use \OCFram\DateField;
@@ -17,15 +19,16 @@ use \OCFram\DateValidator;
 
 class AuthorFormBuilder extends FormBuilder
 {
-  public function build()
-  {
-    $this->form->add(new StringField([
+  public function build($types)
+  {//var_dump($types);die;
+    $this->form
+        ->add(new StringField([
         'label' => 'Pseudo',
         'name' => 'pseudo',
         'maxLength' => 50,
         'validators' => [
           new MaxLengthValidator('Le Auteur de l\'auteur spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier le BAC_pseudo de l\'auteur'),
+          new NotNullValidator('Merci de spécifier un pseudo'),
         ],
        ]))
        ->add(new StringField([
@@ -34,7 +37,7 @@ class AuthorFormBuilder extends FormBuilder
         'maxLength' => 50,
         'validators' => [
           new MaxLengthValidator('Le prénom spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier le prénom de l\'auteur'),
+          new NotNullValidator('Merci de spécifier un prénom'),
         ],
        ]))
        ->add(new StringField([
@@ -43,26 +46,24 @@ class AuthorFormBuilder extends FormBuilder
         'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le nom spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier votre nom'),
+          new NotNullValidator('Merci de spécifier un nom'),
         ],
        ]))
        ->add(new DateField([
         'label' => 'Date of Birth',
         'name' => 'dateofbirth',
         'validators' => [
-          new DateValidator('La date n\'est pas valide'),
-          new NotNullValidator('Merci de spécifier une date'),
-          new DateValidator('Date incorrecte'),
+          new DateValidator('Date incorrecte, format : DD/MM/YYYY'),
+          new NotNullValidator('Merci de spécifier une date au format : DD/MM/YYYY'),
         ],
       ]))
-       ->add(new PasswordField([
+       ->add($password = new PasswordField([
         'label'      => 'Mot de Passe',
         'name'       => 'password',
         'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le mot de passe spécifié est trop long (50 caractères maximum)', 50),
           new NotNullValidator('Merci de spécifier un mot de passe'),
-          //new PasswordValidator('Les mots de passe sont différents', $this->form),
         ],
       ]))
        ->add(new PasswordField([
@@ -71,25 +72,25 @@ class AuthorFormBuilder extends FormBuilder
         'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le mot de passe spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier un mot de passe'),
-          new PasswordValidator('Les mots de passe sont différents', $this->form),
+          new NotNullValidator('Merci de confirmer le mot de passe'),
+          new SameValidator('Les mots de passe sont différents', $password),
         ],
       ]))
        ->add(new EmailField([
         'label'      => 'Email',
         'name'       => 'email',
         'validators' => [
-          new NotNullValidator('Merci de spécifier votre email'),
+          new NotNullValidator('Merci de spécifier un email'),
           new EmailValidator('Merci de rentrer un email valide'),
         ],
        ]))
       ->add(new TypeField([
         'label' => 'Type',
         'name'  => 'type',
-        'type'  => [
-                    'admin' => ['print' => 'admin', 'value' => 1],
-                    'author' => ['print' => 'author', 'value' => 2],
-                  ]
+        'type'  => $types,
+        'validators' => [
+          new TypeValidator('Merci de spécifier un type correct', $types),
+        ],
        ])) 
        ;
   }

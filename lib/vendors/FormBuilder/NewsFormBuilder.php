@@ -10,18 +10,9 @@ use \OCFram\ExistingAuthorValidator;
 
 class NewsFormBuilder extends FormBuilder
 {
-  public function build()
+  public function build($value)
   {
-    $this->form->add(new StringField([
-        'label' => 'Auteur',
-        'name' => 'auteur',
-        'maxLength' => 50,
-        'validators' => [
-          new MaxLengthValidator('L\'auteur spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier l\'auteur de la news'),
-          //new ExistingAuthorValidator('Auteur invalide'),
-        ],
-       ]))
+    $this->form
        ->add(new StringField([
         'label' => 'Titre',
         'name' => 'titre',

@@ -2,11 +2,12 @@
 namespace Model;
 
 use \Entity\News;
-
+use \OCFram\User;
 class NewsManagerPDO extends NewsManager
 {
   public function getList($debut = -1, $limite = -1)
   {
+    
     $sql = 'SELECT id, news_fk_author, auteur, titre, contenu, dateAjout, dateModif FROM T_BLG_news ORDER BY id DESC';
     
     if ($debut != -1 || $limite != -1)
@@ -68,8 +69,7 @@ class NewsManagerPDO extends NewsManager
 
   protected function add(News $news)
   {
-
-    echo 'Attention on ne gere pas le cas ou l\'auteur n\'existez pas';
+    echo 'Attention on ne gere pas le cas ou l\'auteur n\'existe pas';
     $requete = $this->dao->prepare('INSERT INTO T_BLG_news SET news_fk_author = :auteurId, auteur = :auteurNews, titre = :titre, contenu = :contenu, dateAjout = NOW(), dateModif = NOW()');
     //Get the AuthorId from his auteur
     $requeteAuteurId = $this->dao->prepare('SELECT BAC_id FROM T_BLG_authorsc WHERE BAC_pseudo = :pseudo');
@@ -80,7 +80,7 @@ class NewsManagerPDO extends NewsManager
     {
       $requete->bindValue(':auteurId', $AuteurId['BAC_id']);
     }
-    echo $news->titre().' ', $news->contenu().' ',$news->auteur().' ';
+    echo '<br/>'.$news->titre().' ', $news->contenu().' ',$news->auteur().' ';
     $requete->bindValue(':titre', $news->titre());
     $requete->bindValue(':contenu', $news->contenu());
     $requete->bindValue(':auteurNews', $news->auteur());
@@ -90,21 +90,21 @@ class NewsManagerPDO extends NewsManager
 
     protected function modify(News $news)
     {
-      $requete = $this->dao->prepare('UPDATE news SET news_fk_author = :auteurId, auteur = :auteur, titre = :titre, contenu = :contenu, dateModif = NOW() WHERE id = :id');
+      $requete = $this->dao->prepare('UPDATE T_BLG_news SET news_fk_author = :auteurId, auteur = :auteur, titre = :titre, contenu = :contenu, dateModif = NOW() WHERE id = :id');
       
       $requete->bindValue(':titre', $news->titre());
       $requete->bindValue(':auteur', $news->auteur());
       $requete->bindValue(':contenu', $news->contenu());
       $requete->bindValue(':id', $news->id(), \PDO::PARAM_INT);
 
-      $requeteAuteurId = $this->dao->prepare('SELECT id FROM T_BLG_authorsc WHERE auteur = :auteur');
+      $requeteAuteurId = $this->dao->prepare('SELECT BAC_id FROM T_BLG_authorsc WHERE BAC_pseudo = :auteur');
       $requeteAuteurId->bindValue(':auteur', $news->auteur());
       $requeteAuteurId->execute();
 
 
     if ($AuteurId = $requeteAuteurId->fetch())
     {
-      $requete->bindValue(':auteurId', (int)$AuteurId['id'], \PDO::PARAM_INT);
+      $requete->bindValue(':auteurId', (int)$AuteurId['BAC_id'], \PDO::PARAM_INT);
     }
       $requete->execute();
     }

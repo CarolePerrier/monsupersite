@@ -25,7 +25,7 @@ class Author extends Entity
 
   public function isValid()
   {
-    return !(empty($this->BAC_firstname) || empty($this->BAC_lastname) || empty($this->BAC_dateofbirth) || empty($this->BAC_password) || empty($this->type) || empty($this->BAC_salt));
+    return !(empty($this->BAC_firstname) || empty($this->BAC_lastname) || empty($this->BAC_dateofbirth) || empty($this->BAC_password) || empty($this->type));
 
   }
 
@@ -44,9 +44,8 @@ class Author extends Entity
     if (!is_string($password) || empty($password))
     {
       $this->erreurs[] = self::PWD_INVALIDE;
-    }
-    var_dump($this->BAC_salt, crypt($password, $this->BAC_salt));  
-    $this->BAC_password = crypt($password, $this->BAC_salt);
+    }  
+    $this->BAC_password = $password;
   }
 
   public function setPwdCheck($passwordCheck)
@@ -55,8 +54,8 @@ class Author extends Entity
     {
       $this->erreurs[] = self::PWD_INVALIDE;
     }
-    var_dump($this->BAC_salt, crypt($passwordCheck, $this->BAC_salt));
-    $this->BAC_passwordCheck = crypt($passwordCheck, $this->BAC_salt);
+    //var_dump($this->BAC_salt);
+    $this->BAC_passwordCheck = $passwordCheck;
   }
 
   public function setLastname($lastname)

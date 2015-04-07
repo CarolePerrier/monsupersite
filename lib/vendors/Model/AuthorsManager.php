@@ -36,7 +36,10 @@ abstract class AuthorsManager extends Manager
    */
   abstract public function getList();
 
+  abstract public function getTypes();
+
   abstract public function getUnique($login);
+
   abstract public function getUniqueId($id);
   /**
    * Méthode permettant de supprimer un auteur.
@@ -56,5 +59,9 @@ abstract class AuthorsManager extends Manager
   abstract public function count();
 
   abstract public function IsValidAuteur($value);
+
+  abstract public function modify(Author $author);
+
+  abstract public function modifyPassword(Author $author, $newPassword);
 }
 ?>
