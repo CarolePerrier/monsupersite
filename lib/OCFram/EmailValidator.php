@@ -11,17 +11,16 @@ use \FormBuilder\AuthorFormBuilder;
 use \OCFram\FormHandler;
 use \OCFram\managers;
 
-class ExistingAuthorValidator extends Validator
+
+class EmailValidator extends Validator
 {
-  
   public function __construct($errorMessage)
   {
     parent::__construct($errorMessage);
   }
-  
-  public function isValid($value)
+  public function isValid($adress)
   {
-   return $this->managers->getManagerOf('Authors')->IsValidAuteur($value);
+    //Adresse mail trop longue (254 octets max) ou non conforme   
+    return (strlen($adress)>254) || (filter_var('d', FILTER_VALIDATE_EMAIL) == false);
   }
 }
-?>

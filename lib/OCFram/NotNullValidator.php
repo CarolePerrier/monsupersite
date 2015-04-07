@@ -7,5 +7,6 @@ class NotNullValidator extends Validator
   {
     return $value != '';
   }
+
 }
 ?>

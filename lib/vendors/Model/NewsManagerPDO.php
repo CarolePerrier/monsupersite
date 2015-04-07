@@ -7,7 +7,7 @@ class NewsManagerPDO extends NewsManager
 {
   public function getList($debut = -1, $limite = -1)
   {
-    $sql = 'SELECT id, news_fk_author, auteur, titre, contenu, dateAjout, dateModif FROM news ORDER BY id DESC';
+    $sql = 'SELECT id, news_fk_author, auteur, titre, contenu, dateAjout, dateModif FROM T_BLG_news ORDER BY id DESC';
     
     if ($debut != -1 || $limite != -1)
     {
@@ -31,7 +31,7 @@ class NewsManagerPDO extends NewsManager
 
   public function getListAuthor($authorId)
   {
-    $requete = $this->dao->prepare('SELECT id, news_fk_author, auteur, titre, contenu, dateAjout, dateModif FROM news WHERE news_fk_author = :authorId ORDER BY id DESC');
+    $requete = $this->dao->prepare('SELECT id, news_fk_author, auteur, titre, contenu, dateAjout, dateModif FROM T_BLG_news WHERE news_fk_author = :authorId ORDER BY id DESC');
     
     $requete->bindValue(':authorId', $authorId);
     $requete->execute();
@@ -45,7 +45,7 @@ class NewsManagerPDO extends NewsManager
 
   public function getUnique($id)
   {
-    $requete = $this->dao->prepare('SELECT id, news_fk_author, auteur, titre, contenu FROM news WHERE id = :id');
+    $requete = $this->dao->prepare('SELECT id, news_fk_author, auteur, titre, contenu FROM T_BLG_news WHERE id = :id');
     $requete->bindValue(':id', (int) $id, \PDO::PARAM_INT);
     $requete->execute();
     
@@ -63,21 +63,22 @@ class NewsManagerPDO extends NewsManager
 
   public function count()
   {
-    return $this->dao->query('SELECT COUNT(*) FROM news')->fetchColumn();
+    return $this->dao->query('SELECT COUNT(*) FROM T_BLG_news')->fetchColumn();
   }
 
   protected function add(News $news)
   {
-    echo 'Attention on ne gere pas le cas ou l\'auteur n\'existez pas';
-    $requete = $this->dao->prepare('INSERT INTO news SET news_fk_author = :auteurId, auteur = :auteurNews, titre = :titre, contenu = :contenu, dateAjout = NOW(), dateModif = NOW()');
-    //Get the AuthorId from his auteur
-    $requeteAuteurId = $this->dao->prepare('SELECT id FROM Authors WHERE pseudo = :pseudo');
-    $requeteAuteurId->bindValue(':pseudo', $news->auteur());
-    $requeteAuteurId->execute();
 
+    echo 'Attention on ne gere pas le cas ou l\'auteur n\'existez pas';
+    $requete = $this->dao->prepare('INSERT INTO T_BLG_news SET news_fk_author = :auteurId, auteur = :auteurNews, titre = :titre, contenu = :contenu, dateAjout = NOW(), dateModif = NOW()');
+    //Get the AuthorId from his auteur
+    $requeteAuteurId = $this->dao->prepare('SELECT BAC_id FROM T_BLG_authorsc WHERE BAC_pseudo = :pseudo');
+    $requeteAuteurId->bindValue(':pseudo', $news->auteur());
+    
+    $requeteAuteurId->execute();
     if ($AuteurId = $requeteAuteurId->fetch())
     {
-      $requete->bindValue(':auteurId', (int)$AuteurId['id'], \PDO::PARAM_INT);
+      $requete->bindValue(':auteurId', $AuteurId['BAC_id']);
     }
     echo $news->titre().' ', $news->contenu().' ',$news->auteur().' ';
     $requete->bindValue(':titre', $news->titre());
@@ -96,7 +97,7 @@ class NewsManagerPDO extends NewsManager
       $requete->bindValue(':contenu', $news->contenu());
       $requete->bindValue(':id', $news->id(), \PDO::PARAM_INT);
 
-      $requeteAuteurId = $this->dao->prepare('SELECT id FROM Authors WHERE auteur = :auteur');
+      $requeteAuteurId = $this->dao->prepare('SELECT id FROM T_BLG_authorsc WHERE auteur = :auteur');
       $requeteAuteurId->bindValue(':auteur', $news->auteur());
       $requeteAuteurId->execute();
 
@@ -110,7 +111,7 @@ class NewsManagerPDO extends NewsManager
 
   public function delete($id)
   {
-    $this->dao->exec('DELETE FROM news WHERE id = '.(int) $id);
+    $this->dao->exec('DELETE FROM T_BLG_news WHERE id = '.(int) $id);
   }
 }
 ?>

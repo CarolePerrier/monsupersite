@@ -113,11 +113,10 @@ class NewsController extends BackController
 
   public function executeDeleteComment(HTTPRequest $request)
   {
+    $comment = $this->managers->getManagerOf('Comments')->get($request->getData('id'));
     $this->managers->getManagerOf('Comments')->delete($request->getData('id'));
-    
-    $this->app->user()->setFlash('Le commentaire a bien été supprimé !');
-    
-    $this->app->httpResponse()->redirect('.');
+    $this->app->user()->setFlash('Le commentaire a bien été supprimé !');    
+    $this->app->httpResponse()->redirect('/news-'.$comment->news().'.html');
   }
 
   public function executeDelete(HTTPRequest $request)

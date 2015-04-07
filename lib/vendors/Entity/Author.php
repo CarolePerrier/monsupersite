@@ -5,14 +5,17 @@ use \OCFram\Entity;
 
 class Author extends Entity
 {
-  protected $firstname,
-            $lastname,
-            $registrationdate,
-            $dateofbirth,
-            $dateModif,
-            $pwd,
-            $pseudo,
-            $type;
+  protected $BAC_firstname,
+            $BAC_lastname,
+            $BAC_registrationdate,
+            $BAC_dateofbirth,
+            $BAC_dateModif,
+            $BAC_password,
+            $BAC_passwordCheck,
+            $BAC_pseudo,
+            $type,
+            $BAC_email,
+            $BAC_salt;
 
   const PRENOM_INVALIDE         = 1;
   const NOM_INVALIDE            = 2;
@@ -22,7 +25,8 @@ class Author extends Entity
 
   public function isValid()
   {
-    return !(empty($this->firstname) || empty($this->lastname) || empty($this->dateofbirth) || empty($this->pwd) || empty($this->type));
+    return !(empty($this->BAC_firstname) || empty($this->BAC_lastname) || empty($this->BAC_dateofbirth) || empty($this->BAC_password) || empty($this->type) || empty($this->BAC_salt));
+
   }
 
   public function setFirstname($firstname)
@@ -32,16 +36,27 @@ class Author extends Entity
       $this->erreurs[] = self::PRENOM_INVALIDE;
     }
 
-    $this->firstname = $firstname;
+    $this->BAC_firstname = $firstname;
   }
 
-  public function setPwd($pwd)
+  public function setPwd($password)
   {
-    if (!is_string($pwd) || empty($pwd))
+    if (!is_string($password) || empty($password))
     {
       $this->erreurs[] = self::PWD_INVALIDE;
     }
-    $this->pwd = $pwd;
+    var_dump($this->BAC_salt, crypt($password, $this->BAC_salt));  
+    $this->BAC_password = crypt($password, $this->BAC_salt);
+  }
+
+  public function setPwdCheck($passwordCheck)
+  {
+    if (!is_string($passwordCheck) || empty($passwordCheck))
+    {
+      $this->erreurs[] = self::PWD_INVALIDE;
+    }
+    var_dump($this->BAC_salt, crypt($passwordCheck, $this->BAC_salt));
+    $this->BAC_passwordCheck = crypt($passwordCheck, $this->BAC_salt);
   }
 
   public function setLastname($lastname)
@@ -51,70 +66,93 @@ class Author extends Entity
       $this->erreurs[] = self::NOM_INVALIDE;
     }
 
-    $this->lastname = $lastname;
+    $this->BAC_lastname = $lastname;
   }
 
   public function setRegistrationDate(\DateTime $date)
   {
-    $this->registrationdate = $date;
+    $this->BAC_registrationdate = $date;
   }
 
   public function setDateModif(\DateTime $date)
   {
-    $this->dateModif = $date;
+    $this->BAC_dateModif = $date;
   }
 
   public function setDateOfBirth($date)
   {
-    $this->dateofbirth = $date;
+    $this->BAC_dateofbirth = $date;
   }
 
-  public function setPseudo($pseudo) {
-    $this->pseudo = $pseudo;
+  public function setPseudo($BAC_pseudo) {
+    $this->BAC_pseudo = $BAC_pseudo;
   } 
 
   public function setType($type) {
     $this->type = $type;
   } 
 
-  public function firstname()
-  {
-    return $this->firstname;
+  public function setEmail($BAC_email) {
+    $this->BAC_email = $BAC_email;
+  } 
+
+  public function setSalt($BAC_salt) {
+    $this->BAC_salt = $BAC_salt;
   }
 
-  public function pwd()
+  public function firstname()
   {
-    return $this->pwd;
+    return $this->BAC_firstname;
+  }
+
+  public function password()
+  {
+    return $this->BAC_password;
+  }
+
+  public function passwordCheck()
+  {
+    return $this->BAC_passwordCheck;
   }
 
   public function lastname()
   {
-    return $this->lastname;
+    return $this->BAC_lastname;
   }
 
   public function pseudo()
   {
-    return $this->pseudo;
+    return $this->BAC_pseudo;
   }
 
   public function registrationdate()
   {
-    return $this->registrationdate;
+    return $this->BAC_registrationdate;
   }
 
   public function dateModif()
   {
-    return $this->dateModif;
+    return $this->BAC_dateModif;
   }
 
   public function dateofbirth()
   {
-    return $this->dateofbirth;
+    return $this->BAC_dateofbirth;
   }
 
   public function type()
   {
     return $this->type;
+  }
+
+  public function email()
+  {
+    return $this->BAC_email;
+  }
+
+  public function salt()
+  {
+    return $this->BAC_salt;
   }
 }
 ?>

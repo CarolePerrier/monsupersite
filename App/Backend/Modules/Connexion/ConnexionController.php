@@ -22,21 +22,18 @@ class ConnexionController extends BackController
       $login = $request->postData('login');
       $password = $request->postData('password');
       
-      $author = $this->managers->getManagerOf('Authors')->getUnique($login, $password);
       
-      if ($author != null)
+      $author = $this->managers->getManagerOf('Authors')->getUnique($login);
+
+      if ($author != null && crypt($password, $author->salt); == $author->password())
       {
+        $this->app->user()->setAuthenticated(true);
+        $this->app->user()->setAttribute('login', $login); 
         if ($author->authors_fk_type == 1)
         {          
-          $this->app->user()->setAuthenticated(true);
           $this->app->user()->setAuthenticatedAdmin(true);
-          $this->app->httpResponse()->redirect('/admin/');
-        }
-        else
-        {          
-          $this->app->user()->setAuthenticated(true);
-          $this->app->httpResponse()->redirect('/admin/');
-        }
+        }   
+        $this->app->httpResponse()->redirect('/admin/');
         
 
       }

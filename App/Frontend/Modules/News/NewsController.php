@@ -67,29 +67,51 @@ class NewsController extends BackController
     if ($formHandler->process())
     {
       $this->app->user()->setFlash('Le commentaire a bien été ajouté, merci !');
+
+      
+      $authorList = $this->managers->getManagerOf('Comments')->getFollowersAuthors($comment->news());
+
+      $subject = 'Sujet';
+      $message = 'Comment on news you follow!';
+      foreach($authorList as $author)
+      {
+        //Do not send a mail to the sender email
+        if(strcmp($comment->email(), $author['email']) == 0)
+        {
+          //mail($person['email'], $subject, $message);
+          //var_dump($subject); 
+          //var_dump($author['email']);        
+          
+        }
+      }
       $this->app->httpResponse()->redirect('news-'.$request->getData('news').'.html');
     }
 
     $this->page->addVar('comment', $comment);
     $this->page->addVar('form', $form->createView());
     $this->page->addVar('title', 'Ajout d\'un commentaire');
+
+    /*******************************************************/
+    
   }
 
-    public function executeShow(HTTPRequest $request)
-    {
-      $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
-      
-      if (empty($news))
-      {
-        $this->app->httpResponse()->redirect404();
-      }
-      
-      $this->page->addVar('title', $news->titre());
 
-      $this->page->addVar('news', $news);
-      $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
-      $this->page->addVar('author', $this->managers->getManagerOf('Authors')->getUniqueId($news->news_fk_author));
+  public function executeShow(HTTPRequest $request)
+  {
+    $news = $this->managers->getManagerOf('News')->getUnique($request->getData('id'));
+    
+   
+    if (empty($news))
+    {
+      $this->app->httpResponse()->redirect404();
     }
+
+    $this->page->addVar('title', $news->titre());
+
+    $this->page->addVar('news', $news);
+    $this->page->addVar('comments', $this->managers->getManagerOf('Comments')->getListOf($news->id()));
+    $this->page->addVar('author', $this->managers->getManagerOf('Authors')->getUniqueId($news->news_fk_author));
+  }
 
 
   public function executegetNewsCommentedByEmail(HTTPRequest $request)
@@ -103,9 +125,10 @@ class NewsController extends BackController
 
   public function executeListNewsOfAuthor(HTTPRequest $request)
   {
+
     $this->page->addVar('title', 'Liste des news rédigées par l\'auteur');
     $this->page->addVar('listeNews', $this->managers->getManagerOf('News')->getListAuthor($request->getData('id')));
-    $this->page->addVar('authorId', $this->managers->getManagerOf('Authors')->getUniqueId($request->getData('id')));
+    $this->page->addVar('author', $this->managers->getManagerOf('Authors')->getUniqueId($request->getData('id')));
   }
 }
 ?>  

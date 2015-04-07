@@ -11,7 +11,7 @@ abstract class Validator
   }
   
   abstract public function isValid($value);
-  
+
   public function setErrorMessage($errorMessage)
   {
     if (is_string($errorMessage))

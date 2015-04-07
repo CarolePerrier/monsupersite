@@ -5,7 +5,7 @@ use \OCFram\Entity;
 
 class News extends Entity
 {
-  protected $auteurId,
+  protected $authorId,
             $auteur,
             $titre,
             $contenu,

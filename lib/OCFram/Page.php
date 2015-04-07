@@ -6,6 +6,11 @@ class Page extends ApplicationComponent
   protected $contentFile;
   protected $vars = [];
 
+  /**
+   * test
+   * @param string $var   varname
+   * @param mixed $value value
+   */
   public function addVar($var, $value)
   {
     if (!is_string($var) || is_numeric($var) || empty($var))//Si ce n'est pas une string, si c'est un nombre, si c'est vide

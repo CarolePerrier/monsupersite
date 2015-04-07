@@ -12,11 +12,13 @@ class LogOutController extends BackController
     {
       $this->app->user()->setAuthenticated(false);
       $this->app->user()->setAuthenticatedAdmin(false);
+      $this->app->user()->setAttribute('login','');
       $this->app->httpResponse()->redirect('/');
     }
     elseif ($this->app->user()->isAuthenticated() == true)
     {
       $this->app->user()->setAuthenticated(false);
+      $this->app->user()->setAttribute('login','');
       $this->app->httpResponse()->redirect('/');
     }
   }

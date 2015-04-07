@@ -18,6 +18,11 @@ class StringField extends Field
     
     if (!empty($this->value))
     {
+      if(strpos($this->value,' '))
+      {
+        substr_replace($this->value, ' ','-',0);
+        echo 'Le champ '.$this->name.' ne peut pas contenir d\'espace, valeur de remplacement : '.$this->value.'';
+      } 
       $widget .= ' value="'.htmlspecialchars($this->value).'"';
     }
     

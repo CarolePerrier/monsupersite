@@ -10,6 +10,7 @@ abstract class Field
   protected $name;
   protected $validators = [];
   protected $value;
+  protected $valueConfirm;
   
   public function __construct(array $options = [])
   {
@@ -25,7 +26,7 @@ abstract class Field
   {
     foreach ($this->validators as $validator)
     { 
-      if (!$validator->isValid($this->value))
+      if (!$validator->isValid($this->value, $this->valueConfirm))
       {
         $this->errorMessage = $validator->errorMessage();
         return false;
@@ -59,6 +60,11 @@ abstract class Field
     return $this->value;
   }
   
+  public function valueConfirm()
+  {
+    return $this->valueConfirm;
+  }
+
   public function setLabel($label)
   {
     if (is_string($label))
@@ -101,6 +107,14 @@ abstract class Field
     if (is_string($value))
     {
       $this->value = $value;
+    }
+  }
+
+  public function setValueConfirm($valueConfirm)
+  {
+    if (is_string($valueConfirm))
+    {
+      $this->valueConfirm = $valueConfirm;
     }
   }
 }

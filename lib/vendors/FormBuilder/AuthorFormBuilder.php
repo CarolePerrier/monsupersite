@@ -3,8 +3,13 @@ namespace FormBuilder;
 
 use \OCFram\FormBuilder;
 use \OCFram\StringField;
+use \OCFram\PasswordField;
+use \OCFram\PasswordValidator;
 use \OCFram\TextField;
 use \OCFram\NumberField;
+use \OCFram\TypeField;
+use \OCFram\EmailField;
+use \OCFram\EmailValidator;
 use \OCFram\DateField;
 use \OCFram\MaxLengthValidator;
 use \OCFram\NotNullValidator;
@@ -20,8 +25,7 @@ class AuthorFormBuilder extends FormBuilder
         'maxLength' => 50,
         'validators' => [
           new MaxLengthValidator('Le Auteur de l\'auteur spécifié est trop long (50 caractères maximum)', 50),
-          new NotNullValidator('Merci de spécifier le pseudo de l\'auteur'),
-          //new ExistingAuthor('Auteur invalide'),
+          new NotNullValidator('Merci de spécifier le BAC_pseudo de l\'auteur'),
         ],
        ]))
        ->add(new StringField([
@@ -34,9 +38,9 @@ class AuthorFormBuilder extends FormBuilder
         ],
        ]))
        ->add(new StringField([
-        'label' => 'Lastname',
-        'name' => 'lastname',
-        'maxLength' => 50,
+        'label'      => 'Lastname',
+        'name'       => 'lastname',
+        'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le nom spécifié est trop long (50 caractères maximum)', 50),
           new NotNullValidator('Merci de spécifier votre nom'),
@@ -51,18 +55,41 @@ class AuthorFormBuilder extends FormBuilder
           new DateValidator('Date incorrecte'),
         ],
       ]))
-       ->add(new StringField([
-        'label' => 'Mot de Passe',
-        'name' => 'pwd',
-        'maxLength' => 50,
+       ->add(new PasswordField([
+        'label'      => 'Mot de Passe',
+        'name'       => 'password',
+        'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le mot de passe spécifié est trop long (50 caractères maximum)', 50),
           new NotNullValidator('Merci de spécifier un mot de passe'),
+          //new PasswordValidator('Les mots de passe sont différents', $this->form),
+        ],
+      ]))
+       ->add(new PasswordField([
+        'label'      => 'Confirmation',
+        'name'       => 'passwordCheck',
+        'maxLength'  => 50,
+        'validators' => [
+          new MaxLengthValidator('Le mot de passe spécifié est trop long (50 caractères maximum)', 50),
+          new NotNullValidator('Merci de spécifier un mot de passe'),
+          new PasswordValidator('Les mots de passe sont différents', $this->form),
+        ],
+      ]))
+       ->add(new EmailField([
+        'label'      => 'Email',
+        'name'       => 'email',
+        'validators' => [
+          new NotNullValidator('Merci de spécifier votre email'),
+          new EmailValidator('Merci de rentrer un email valide'),
         ],
        ]))
-      ->add(new NumberField([
+      ->add(new TypeField([
         'label' => 'Type',
-        'name' => 'type',
+        'name'  => 'type',
+        'type'  => [
+                    'admin' => ['print' => 'admin', 'value' => 1],
+                    'author' => ['print' => 'author', 'value' => 2],
+                  ]
        ])) 
        ;
   }

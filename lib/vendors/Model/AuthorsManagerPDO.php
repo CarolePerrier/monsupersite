@@ -7,19 +7,18 @@ class AuthorsManagerPDO extends AuthorsManager
 {
   public function getList()
   {
-    $requete = $this->dao->prepare('SELECT id, firstname, lastname, pseudo, registrationdate, dateofbirth, dateModif FROM authors ORDER BY id ASC');
+    $requete = $this->dao->prepare('SELECT BAC_id, BAC_firstname, BAC_lastname, BAC_pseudo, BAC_registrationdate, BAC_dateofbirth, BAC_email, BAC_dateModif FROM T_BLG_authorsc ORDER BY BAC_id ASC');
     $requete->execute();
     // $requete->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, '\Entity\Author');
     $listAuthors = $requete->fetchAll();
     return $listAuthors;
   }
 
-  public function getUnique($login, $password)
+  public function getUnique($login)
   {
-    $requete = $this->dao->prepare('SELECT id, firstname, lastname, pseudo, pwd, dateofbirth, registrationdate, dateModif, authors_fk_type FROM authors WHERE pseudo = :pseudo AND pwd = :pwd');
+    $requete = $this->dao->prepare('SELECT BAC_id, BAC_firstname, BAC_lastname, BAC_pseudo, BAC_password, BAC_dateofbirth, BAC_registrationdate, BAC_dateModif, BAC_email, authors_fk_type FROM T_BLG_authorsc WHERE BAC_pseudo = :pseudo LIMIT 1');
 
-    $requete->bindValue(':pseudo', (string) $login, \PDO::PARAM_STR);
-    $requete->bindValue(':pwd', (string) $password, \PDO::PARAM_STR);
+    $requete->bindValue(':pseudo', $login, \PDO::PARAM_STR);
 
     $requete->execute();
 
@@ -35,9 +34,9 @@ class AuthorsManagerPDO extends AuthorsManager
 
   public function getUniqueId($id)
   {
-    $requete = $this->dao->prepare('SELECT * FROM authors WHERE id = :id');
+    $requete = $this->dao->prepare('SELECT * FROM T_BLG_authorsc WHERE BAC_id = :id');
 
-    $requete->bindValue(':id', (string) $id, \PDO::PARAM_INT);
+    $requete->bindValue(':id', (string) $id);
 
     $requete->execute();
 
@@ -53,32 +52,35 @@ class AuthorsManagerPDO extends AuthorsManager
 
   public function count()
   {
-    return $this->dao->query('SELECT COUNT(*) FROM authors')->fetchColumn();
+    return $this->dao->query('SELECT COUNT(*) FROM T_BLG_authorsc')->fetchColumn();
   }
 
   protected function add(Author $author)
   {
-    $requete = $this->dao->prepare('INSERT INTO authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, pseudo = :pseudo, registrationdate = NOW(), dateofbirth = :dateofbirth, dateModif = NOW(), authors_fk_type = :type');
+    $requete = $this->dao->prepare('INSERT INTO T_BLG_authorsc SET BAC_firstname = :firstname, BAC_lastname = :lastname, BAC_password = :password, BAC_pseudo = :pseudo, BAC_registrationdate = NOW(), BAC_dateofbirth = :dateofbirth, BAC_dateModif = NOW(), authors_fk_type = :type, BAC_email = :email, BAC_salt = :salt');
 
     $requete->bindValue(':firstname', $author->firstname());
     $requete->bindValue(':lastname', $author->lastname());
-    $requete->bindValue(':pwd', $author->pwd());
+    $requete->bindValue(':password', $author->password());
     $requete->bindValue(':pseudo', $author->pseudo());
     $requete->bindValue(':dateofbirth', $author->dateofbirth());
     $requete->bindValue(':type', $author->type());
+    $requete->bindValue(':email', $author->email());
+    $requete->bindValue(':salt', $author->salt());
     
     $requete->execute();
   }
 
     protected function modify(Author $author)
     {
-      $requete = $this->dao->prepare('UPDATE authors SET firstname = :firstname, lastname = :lastname, pwd = :pwd, pseudo = :pseudo, dateofbirth = :dateofbirth, dateModif = NOW() WHERE id = :id');
+      $requete = $this->dao->prepare('UPDATE T_BLG_authorsc SET BAC_firstname = :firstname, BAC_lastname = :lastname, BAC_password = :password, BAC_pseudo = :pseudo, BAC_dateofbirth = :dateofbirth, BAC_dateModif = NOW(), , BAC_email = :email WHERE BAC_ id = :id');
       
       $requete->bindValue(':firstname', $author->firstname());
       $requete->bindValue(':lastname', $author->lastname());
       $requete->bindValue(':pseudo', $author->pseudo());
-      $requete->bindValue(':pwd', $author->pwd());
+      $requete->bindValue(':password', $author->password());
       $requete->bindValue(':dateofbirth', $author->dateofbirth());
+      $requete->bindValue(':email', $author->email());
       $requete->bindValue(':id', $author->id(), \PDO::PARAM_INT);
       
       $requete->execute();
@@ -86,12 +88,12 @@ class AuthorsManagerPDO extends AuthorsManager
 
   public function delete($id)
   {
-    $this->dao->exec('DELETE FROM authors WHERE id = '.(int) $id);
+    $this->dao->exec('DELETE FROM T_BLG_authorsc WHERE BAC_id = '.(int) $id);
   }
 
   public function IsValidAuteur($value)
   {
-    $requete = $this->dao->prepare('SELECT id FROM authors WHERE pseudo = :pseudo');
+    $requete = $this->dao->prepare('SELECT BAC_id FROM T_BLG_authorsc WHERE BAC_pseudo = :pseudo');
     $requete->bindValue(':pseudo', $value);
     $requete->execute();
 
