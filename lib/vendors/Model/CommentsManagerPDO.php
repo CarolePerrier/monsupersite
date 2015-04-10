@@ -7,11 +7,12 @@ class CommentsManagerPDO extends CommentsManager
 {
   protected function add(Comment $comment)
   {
-    $q = $this->dao->prepare('INSERT INTO T_BLG_comments SET news = :news, auteur = :auteur, contenu = :contenu, date = NOW()');
+    $q = $this->dao->prepare('INSERT INTO T_BLG_comments SET news = :news, auteur = :auteur, contenu = :contenu, date = NOW(), email = :email');
     
     $q->bindValue(':news', $comment->news(), \PDO::PARAM_INT);
     $q->bindValue(':auteur', $comment->auteur());
     $q->bindValue(':contenu', $comment->contenu());
+    $q->bindValue(':email', $comment->email());
     $q->execute();
     //If the comment's author checked the box : his email is added to newsd table with the news' Id .
     if($comment->avertissement() == 1)

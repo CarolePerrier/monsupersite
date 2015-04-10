@@ -13,7 +13,14 @@ class CheckBoxField extends Field
       $widget .= $this->errorMessage.'<br />';
     }
     
-    $widget .= '<label>'.$this->label.'</label><input type="checkbox" name="'.$this->name.'" value="1"';
+    $widget .= '<label>'.$this->label.'</label><input type="checkbox" name="'.$this->name.'"';
+    if (!empty($this->value))
+    {
+      $widget .= 'value="'.$this->value.'"';
+    }
+    
+    
+    $widget .= 'id="'.$this->id.'"';
     
     return $widget .= ' />';
   }

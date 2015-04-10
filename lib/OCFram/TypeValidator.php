@@ -7,16 +7,15 @@ class TypeValidator extends Validator
 
   public function __construct($errorMessage, $types)
   {
-    parent::__construct($errorMessage);
-    
+    parent::__construct($errorMessage);    
     $this->setType($types);
   }
 
   public function isValid($value)
   {
-  	//	var_dump($this->types);die;
   	foreach ($this->types as $type) 
   	{
+
   		if($type['BAY_id'] == $value)
   		{
   			return true;
@@ -36,5 +35,6 @@ class TypeValidator extends Validator
       throw new \RuntimeException('Il doit y avoir au moins un type dans la base');
     }
   }
+  
 }
 ?>

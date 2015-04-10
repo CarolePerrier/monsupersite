@@ -1,10 +1,10 @@
-<h2>Connexion</h2>
+<h2>Connection</h2>
 <form action="" method="post">
   <label>Login</label>
-  <input type="text" name="login" /><br />
+  <input type="text" name="login" /><br/>
  
-  <label>Mot de passe</label>
-  <input type="password" name="password" /><br /><br />
+  <label>Password</label>
+  <input type="password" name="password" /><br/><br/>
  
   <input type="submit" value="Connexion" />
 </form>

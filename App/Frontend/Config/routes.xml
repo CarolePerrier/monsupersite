@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <routes>
 	<route url="/" module="News" action="index" />
-	<route url="/news-([0-9]+)\.html" module="News" action="show" vars="id"/>
-	<route url="/commenter-([0-9]+)\.html" module="News" action="insertComment" vars="news" />
+	<route url="/news-([0-9]+)\.html" module="News" action="show" vars="id" />
+
+	<route url="/commenter-([0-9]+)\.html" module="News" action="insertCommentAjax" vars="news" type="json" />
+	<route url="/commenter-([0-9]+)\.json" module="News" action="insertCommentAjax" vars="news" type="html" />
+
 	<route url="/author-([0-9]+)\.html" module="Author" action="index" vars="id" />
   	<route url="/news-commented-by/(.+)\.html" module="News" action="getNewsCommentedByEmail" vars="email" />
-	<route url="/author-([0-9]+)/(.+)-(.+)\.html" module="News" action="ListNewsOfAuthor" vars="id,BAC_firstname,lastename" />
+	<route url="/author-([0-9]+)/(.+)-(.+)\.html" module="News" action="ListNewsOfAuthor" vars="id,BAC_firstname,BAC_lastename"/>
 	<route url="/yourdevice\.html" module="devicedetect" action="detect"/>
  	<route url="/author-password-recovering.html" module="PasswordRecovering" action="index"/>
 </routes>

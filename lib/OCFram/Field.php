@@ -8,6 +8,8 @@ abstract class Field
   protected $errorMessage;
   protected $label;
   protected $name;
+  protected $id;
+  protected $avertissement;
   protected $validators = [];
   protected $value;
   protected $valueConfirm;
@@ -34,7 +36,12 @@ abstract class Field
     }
     return true;
   }
-  
+
+  public function avertissement()
+  {
+    return $this->avertissement;
+  }
+
   public function label()
   {
     return $this->label;
@@ -63,6 +70,16 @@ abstract class Field
   public function valueConfirm()
   {
     return $this->valueConfirm;
+  }
+
+  public function id()
+  {
+    return $this->id;
+  }
+
+  public function setAvertissement($avertissement)
+  {
+    return $this->avertissement = $avertissement;
   }
 
   public function setLabel($label)
@@ -115,6 +132,14 @@ abstract class Field
     if (is_string($valueConfirm))
     {
       $this->valueConfirm = $valueConfirm;
+    }
+  }
+
+  public function setId($id)
+  {
+    if (is_string($id))
+    {
+      $this->id = $id;
     }
   }
 }

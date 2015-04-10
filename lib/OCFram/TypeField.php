@@ -14,7 +14,7 @@ class TypeField extends Field
       $widget .= $this->errorMessage.'<br />';
     }
     
-    $widget .= '<label>'.$this->label.'</label><select name="'.$this->name.'" ';
+    $widget .= '<label>'.$this->label.'</label><select name="'.$this->name.'" id="'.$this->id.'"';
     
     $widget .= '>';
 
@@ -22,7 +22,14 @@ class TypeField extends Field
     {
     	   // var_dump($type);die;
        	//Utilise le tableau de valeurs
-       	$widget .= '<option value='.$type['BAY_id'].'>'.$type['BAY_description'].'</option>';
+        if($this->value == $type['BAY_id'])
+        {
+          $widget .= '<option value='.$type['BAY_id'].' selected="selected">'.$type['BAY_description'].'</option>';
+        }
+        else
+        {
+          $widget .= '<option value='.$type['BAY_id'].'>'.$type['BAY_description'].'</option>';
+        }
     }
     $widget .= '</select>';
     

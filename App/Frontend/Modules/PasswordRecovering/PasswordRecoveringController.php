@@ -35,10 +35,10 @@ class PasswordRecoveringController extends BackController
 		      $subject = 'Récupération du mot de passe de '.$login;
 		   	  $message = 'Bonjour '.$login.', votre mot de passe est : '.$new_password;
 		   	  
-		   	   var_dump($email);
-		   	   var_dump($subject);
-		   	   var_dump($message);
-		   	   die;
+		   	   // var_dump($email);
+		   	   // var_dump($subject);
+		   	   // var_dump($message);
+		   	   // die;
 		      //mail($email, $subject, $message);
 		      
 		      echo 'Un email vous a été envoyé à l\'adresse suivante : '.$email;

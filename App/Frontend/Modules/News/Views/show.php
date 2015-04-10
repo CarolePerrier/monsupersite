@@ -1,63 +1,116 @@
-<p>Par <em><a href="/author-<?= $author->BAC_id?>/<?= $author->firstname() ?>-<?= $author->lastname()?>.html"><?= $author->pseudo() ?></a></em>, le <?= $news['dateAjout']->format('d/m/Y à H\hi') ?></p>
+<p>By <em><a href="/author-<?= $author->BAC_id?>/<?= $author->firstname() ?>-<?= $author->lastname()?>.html"><?= $author->pseudo() ?></a></em>, the <?= $news['dateAjout']->format('d/m/Y \a\t H\hi') ?></p>
 <h2><?= $news['titre'] ?></h2>
 <p><?= nl2br($news['contenu']) ?></p>
+<div id="fond"></div>
+<div id="modal" class="popup"></div>
+<?php if ($news['dateAjout'] != $news['dateModif']) : ?>
+  <p style="text-align: right;"><small><em>Modified the <?= $news['dateModif']->format('d/m/Y \a\t H\hi') ?></em></small></p>
+<?php endif;
 
-<?php if ($news['dateAjout'] != $news['dateModif']) { ?>
-  <p style="text-align: right;"><small><em>Modifiée le <?= $news['dateModif']->format('d/m/Y à H\hi') ?></em></small></p>
-<?php } ?>
-
-<p><a href="commenter-<?= $news['id'] ?>.html">Ajouter un commentaire</a></p>
-
-<?php
 if (empty($comments))
 {
-?>
-<p>Aucun commentaire n'a encore été posté. Soyez le premier à en laisser un !</p>
-<?php
+  ?>
+    <p id="nocomment">No comment posted yet. Be the first to add one !</p>
+  <?php
 }
 /*********************************************Comments*********************************************/
-foreach ($comments as $comment)
-{
 ?>
-<fieldset>
-  <legend>
-  	Posté par 
-    <?php if($comment['email'] != null) : ?>
-  	    <a href="/news-commented-by/<?= $comment['email'] ?>.html"><strong><?= htmlspecialchars($comment['auteur']) ?></strong></a>
-    <?php else : ?>
-        <strong><?= htmlspecialchars($comment['auteur']) ?></strong>
-    <?php endif; ?>
-     le <?= $comment['date']->format('d/m/Y à H\hi') ?>
-    <?php if ($user->isAuthenticatedAdmin()) { ?> -
-      <a href="admin/comment-update-<?= $comment['id'] ?>.html">Modifier</a> |
-      <a href="admin/comment-delete-<?= $comment['id'] ?>.html">Supprimer</a>
+
+
+<div id="commentaires">
+    <!-- les commentaires postés -->
+    <?php
+      foreach ($comments as $comment) {
+    ?>
+        <fieldset>
+          <legend>
+            Added by 
+            <?php if($comment['email'] != null) : ?>
+                <a href="/news-commented-by/<?= $comment['email'] ?>.html"><strong><?= htmlspecialchars($comment['auteur']) ?></strong></a>
+            <?php else : ?>
+                <strong><?= htmlspecialchars($comment['auteur']) ?></strong>
+            <?php endif; ?>
+             the <?= $comment['date']->format('d/m/Y \a\t H\hi') ?>
+            <?php if ($user->isAuthenticatedAdmin()) { ?>
+              <a href="admin/comment-update-<?= $comment['id'] ?>.html">Modify</a> |
+              <a href="admin/comment-delete-<?= $comment['id'] ?>.html">Delete</a>
+            <?php } ?>
+          </legend>
+          <p><?= nl2br(htmlspecialchars($comment['contenu'])) ?></p>
+        </fieldset>
     <?php } ?>
-  </legend>
-  <p><?= nl2br(htmlspecialchars($comment['contenu'])) ?></p>
-</fieldset>
-<?php
-}
-?>
+</div>
 
+<h2>React</h2>
+<form action="/commenter-<?= $news['id'] ?>.html" method="post" id="form">
+  <p>
+    <input type="hidden" id="news_id" value="<?= $news['id'] ?>" />
+    <?= $form ?>
 
-<html>
-    <body>
-      <div id="messages">
-          <!-- les messages du tchat -->
-          <?php
-               
-          ?>
-      </div>
+    <input type="submit" value="Commenter" id="envoi"/>
+  </p>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="./main.js" type="text/javascript"></script>
+<script>
+  $('#auteur').click(function(){
+    document.getElementById('auteur').style.backgroundColor = "white";
+  });
+  $('#contenu').click(function(){
+    document.getElementById('contenu').style.backgroundColor = "white";
+  });
+  $('#email').click(function(){
+    document.getElementById('email').style.backgroundColor = "white";
+  });
+  $('#envoi').click(function(e){
+    //e.preventDefault(); // on empêche le bouton d'envoyer le formulaire
+    var news    = <?php echo($news['id']); ?>;
+    var author  = $('#auteur').val(); // on sécurise les données
+    var field   = $('#contenu').val();
+    var email   = $('#email').val();   
+    var warning = $('#avertissement').val();
+    
+    if(author == "" || field == "" || email == ""){ // on vérifie que les variables ne sont pas vides 
+      if(author == "")
+      {
+        document.getElementById('auteur').style.backgroundColor = "red";
+        textAuthor = 'You have to specify an author';
+      }
+      if(field == "")
+      {
+        document.getElementById('contenu').style.backgroundColor = "red";
+        textField = 'You have to specify a field';
+      }
+      if(email == "")
+      {
+        document.getElementById('email').style.backgroundColor = "red";
+        textEmail = 'You have to specify an email';
+      }
+      showModal(textAuthor+'<br/>'+textField+'<br/>'+textEmail+'<br/>');
+    }
+    else
+    {
+        $.ajax({
+            url : "/commenter-"+ news +".html",
+            type : "POST", // la requête est de type POST
+            data : {
+              news : news,
+              auteur : author,
+              contenu : field,
+              email : email,
+              avertissement : warning
+            },// et on envoie nos données
+            dataType : "json",
+            success : function(html){
+                var d = new Date();
+                $('#nocomment').html('');
+                $('#commentaires').append("<fieldset><legend>Added by <strong>" + author + "</strong> the " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " at " + d.getHours() + "h" + d.getMinutes() + " </legend><p>" + contenu + "</p></fieldset>"); // on ajoute le message dans la zone prévue
+                showModal('Your comment is added ! Thank you for your contribution ! ');
+            }
+        });
 
-      <h2>Ajouter un commentaire</h2>
-      <form method="post">
-        <p>
-          <?= $form ?>
-          <input type="submit" name="submit" value="Commenter"/>
-      
-        </p>
-      </form>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-      <script src="main.js"></script>
-    </body>
-</html>
+      }
+      return false;
+  });
+  
+</script>

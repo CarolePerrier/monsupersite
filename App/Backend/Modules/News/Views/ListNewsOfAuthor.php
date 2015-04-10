@@ -1,8 +1,8 @@
-<h2>Liste des news de <?php echo $authorId->pseudo(); ?></h2>
+<h2>News posted by <?php echo $authorId->pseudo(); ?></h2>
 
 <?php if(!empty($listeNews)): ?>
 	<table>
-	  <tr><th>Auteur</th><th>Titre</th><th>Date d'ajout</th><th>Contenu</th></tr>
+	  <tr><th>Author</th><th>Title</th><th>Adding date</th><th>Field</th></tr>
 	<?php
 	foreach ($listeNews as $news)
 	{

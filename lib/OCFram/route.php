@@ -9,17 +9,26 @@ class Route
   protected $varsNames;
   protected $vars = [];
 
-  public function __construct($url, $module, $action, array $varsNames)
+  protected $typeName;
+  protected $type;
+
+  public function __construct($url, $module, $action, array $varsNames, $typeName)
   {
     $this->setUrl($url);
     $this->setModule($module);
     $this->setAction($action);
     $this->setVarsNames($varsNames);
+    $this->setTypeName($typeName);
   }
 
   public function hasVars()
   {
     return !empty($this->varsNames);
+  }
+
+  public function hasType()
+  {
+    return !empty($this->typeName);
   }
 
   public function match($url)
@@ -63,9 +72,19 @@ class Route
     $this->varsNames = $varsNames;
   }
 
+  public function setTypeName($typeName)
+  {
+    $this->typeName = $typeName;
+  }
+
   public function setVars(array $vars)
   {
     $this->vars = $vars;
+  }
+
+  public function setType($type)
+  {
+    $this->type = $type;
   }
   //getter
   public function action()
@@ -83,9 +102,19 @@ class Route
     return $this->vars;
   }
 
+  public function type()
+  {
+    return $this->type;
+  }
+
   public function varsNames()
   {
     return $this->varsNames;
+  }
+
+  public function typeName()
+  {
+    return $this->typeName;
   }
 }
 ?>

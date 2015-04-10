@@ -15,15 +15,63 @@ class NewsController extends BackController
   {
     $this->page->addVar('title', 'Gestion des news');
 
+    $news = new News; 
+    $formBuilder = new NewsFormBuilder($news);
+    $formBuilder->build(NULL);
+    $form = $formBuilder->form();
+   
     $manager = $this->managers->getManagerOf('News');
-
+    $this->page->addVar('auteur',$this->app->user()->getAttribute('login'));
+    $this->page->addVar('form', $form->createView());
     $this->page->addVar('listeNews', $manager->getList());
     $this->page->addVar('nombreNews', $manager->count());
   }
 
+  public function executeInsertAjax(HTTPRequest $request)
+  {
+
+    if(isset($_POST['auteur']) && isset($_POST['contenu']) && isset($_POST['titre']))
+    {
+      $type = '.json';
+      $variables = array(
+        'auteur'        => $_POST['auteur'],
+        'contenu'       => $_POST['contenu'],
+        'titre'         => $_POST['titre']
+      );
+
+      $news = new News; 
+      $formBuilder = new NewsFormBuilder($news);
+      $formBuilder->build(NULL);
+
+      $form = $formBuilder->form();
+      
+      $this->processForm($request);
+
+      //echo json_encode($variables);
+    }
+    else
+    {
+      $type = '.html';
+      echo "Un de vos champs est faux";
+    }
+    $this->page->addVar('type', $type);
+
+
+    $this->page->addVar('auteur', $_POST['auteur']);
+    $this->page->addVar('contenu', $_POST['contenu']);
+    $this->page->addVar('titre', $_POST['titre']);
+
+  }
+
   public function executeInsert(HTTPRequest $request)
   {
+    $news = new News; 
+    $formBuilder = new NewsFormBuilder($news);
+    $formBuilder->build(NULL);
+    $form = $formBuilder->form();
     $this->processForm($request);
+
+    $this->page->addVar('form', $form->createView());
     $this->page->addVar('title', 'Ajout d\'une news');
   }
 
@@ -72,10 +120,9 @@ class NewsController extends BackController
     if ($formHandler->process())
     {
       $this->app->user()->setFlash($news->isNew() ? 'La news a bien été ajoutée !' : 'La news a bien été modifiée !');
-      $this->app->httpResponse()->redirect('/admin/');
+      //$this->app->httpResponse()->redirect('/admin/');
     }
 
-    $this->page->addVar('form', $form->createView());
   }
 
   public function executeUpdateComment(HTTPRequest $request)
@@ -96,7 +143,7 @@ class NewsController extends BackController
     }
 
     $formBuilder = new CommentFormBuilder($comment);
-    $formBuilder->build();
+    $formBuilder->build(NULL);
 
     $form = $formBuilder->form();
 

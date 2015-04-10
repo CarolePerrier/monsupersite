@@ -20,21 +20,24 @@ use \OCFram\DateValidator;
 class AuthorFormBuilder extends FormBuilder
 {
   public function build($types)
-  {//var_dump($types);die;
+  {
+
     $this->form
         ->add(new StringField([
-        'label' => 'Pseudo',
-        'name' => 'pseudo',
-        'maxLength' => 50,
+        'label'      => 'Pseudo',
+        'name'       => 'pseudo',
+        'id'         => 'pseudo',
+        'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le Auteur de l\'auteur spécifié est trop long (50 caractères maximum)', 50),
           new NotNullValidator('Merci de spécifier un pseudo'),
         ],
        ]))
        ->add(new StringField([
-        'label' => 'Firstname',
-        'name' => 'firstname',
-        'maxLength' => 50,
+        'label'      => 'Firstname',
+        'name'       => 'firstname',
+        'id'         => 'firstname',
+        'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le prénom spécifié est trop long (50 caractères maximum)', 50),
           new NotNullValidator('Merci de spécifier un prénom'),
@@ -43,6 +46,7 @@ class AuthorFormBuilder extends FormBuilder
        ->add(new StringField([
         'label'      => 'Lastname',
         'name'       => 'lastname',
+        'id'         => 'lastname',
         'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le nom spécifié est trop long (50 caractères maximum)', 50),
@@ -50,16 +54,18 @@ class AuthorFormBuilder extends FormBuilder
         ],
        ]))
        ->add(new DateField([
-        'label' => 'Date of Birth',
-        'name' => 'dateofbirth',
+        'label'      => 'Date of Birth',
+        'name'       => 'dateofbirth',
+        'id'         => 'dateofbirth',
         'validators' => [
           new DateValidator('Date incorrecte, format : DD/MM/YYYY'),
           new NotNullValidator('Merci de spécifier une date au format : DD/MM/YYYY'),
         ],
       ]))
        ->add($password = new PasswordField([
-        'label'      => 'Mot de Passe',
+        'label'      => 'Password',
         'name'       => 'password',
+        'id'         => 'password',
         'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le mot de passe spécifié est trop long (50 caractères maximum)', 50),
@@ -67,8 +73,9 @@ class AuthorFormBuilder extends FormBuilder
         ],
       ]))
        ->add(new PasswordField([
-        'label'      => 'Confirmation',
+        'label'      => 'Password confirmation',
         'name'       => 'passwordCheck',
+        'id'         => 'passwordCheck',
         'maxLength'  => 50,
         'validators' => [
           new MaxLengthValidator('Le mot de passe spécifié est trop long (50 caractères maximum)', 50),
@@ -79,15 +86,17 @@ class AuthorFormBuilder extends FormBuilder
        ->add(new EmailField([
         'label'      => 'Email',
         'name'       => 'email',
+        'id'         => 'email',
         'validators' => [
           new NotNullValidator('Merci de spécifier un email'),
           new EmailValidator('Merci de rentrer un email valide'),
         ],
        ]))
       ->add(new TypeField([
-        'label' => 'Type',
-        'name'  => 'type',
-        'type'  => $types,
+        'label'      => 'Type',
+        'name'       => 'type',
+        'id'         => 'type',
+        'type'       => $types,
         'validators' => [
           new TypeValidator('Merci de spécifier un type correct', $types),
         ],

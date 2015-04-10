@@ -43,6 +43,15 @@ class Router
           $route->setVars($listVars);
         }
 
+        // Si elle a des variables
+        if ($route->hasType())
+        {
+          $typeName = $route->typeName();
+        
+          // On assigne cette variable à la route
+          $route->setType($typeName);
+        }
+
         return $route;
       }
     }

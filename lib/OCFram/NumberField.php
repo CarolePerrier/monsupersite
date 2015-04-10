@@ -13,7 +13,7 @@ class NumberField extends Field
       $widget .= $this->errorMessage.'<br />';
     }
     
-    $widget .= '<label>'.$this->label.'</label><input type="number" name="'.$this->name.'" min="1" max="4"';
+    $widget .= '<label>'.$this->label.'</label><input type="number" name="'.$this->name.'" min="1" max="4" id="'.$this->id.'"';
     
     
     $widget .= ' value="1"';

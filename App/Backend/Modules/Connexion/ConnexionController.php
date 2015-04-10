@@ -24,7 +24,7 @@ class ConnexionController extends BackController
       
       
       $author = $this->managers->getManagerOf('Authors')->getUnique($login);
-      //var_dump(substr(crypt($password, $author->salt()),0,50), $author->salt(), $author);
+      
       if ($author != null && substr(crypt($password, $author->salt()),0,50) == $author->password())
       {
         $this->app->user()->setAuthenticated(true);

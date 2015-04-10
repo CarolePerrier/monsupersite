@@ -28,6 +28,7 @@ abstract class Application
     $routes = $xml->getElementsByTagName('route');
 
     // On parcourt les routes du fichier XML.
+    $type = "";
     foreach ($routes as $route)
     {
       $vars = [];
@@ -36,10 +37,17 @@ abstract class Application
       {
         $vars = explode(',', $route->getAttribute('vars'));
       }
-
+      if ($route->hasAttribute('type'))
+      {
+        $type = $route->getAttribute('type');
+      }
+      else
+      {
+        $type = 'html';
+      }
       // On ajoute la route au routeur.
-      $router->addRoute(new Route($route->getAttribute('url'), $route->getAttribute('module'), $route->getAttribute('action'), $vars));
-
+      $router->addRoute(new Route($route->getAttribute('url'), $route->getAttribute('module'), $route->getAttribute('action'), $vars, $type));
+      
     }
     try
     {
