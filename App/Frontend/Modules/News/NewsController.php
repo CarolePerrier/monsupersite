@@ -43,11 +43,12 @@ class NewsController extends BackController
   {
     if(isset($_POST['auteur']) && isset($_POST['contenu']) && isset($_POST['email']))
     {
-        $type = '.json';
+
         $avertissement = 'off';
         if (isset($_POST['avertissement']))
         {
           $avertissement = $_POST['avertissement'];
+        var_dump($_POST['avertissement']);
         }
         $variables = array(
           'news'          => $_GET['news'],
@@ -56,7 +57,6 @@ class NewsController extends BackController
           'email'         => $_POST['email'],
           'avertissement' => $avertissement
         );
-        
         $comment = new Comment($variables);
 
         $formBuilder = new CommentFormBuilder($comment);
@@ -89,9 +89,7 @@ class NewsController extends BackController
         $this->page->addVar('auteur', $_POST['auteur']);
         $this->page->addVar('contenu', $_POST['contenu']);
         $this->page->addVar('email', $_POST['email']);
-        $this->page->addVar('avertissement', $avertissement);
-
-        
+        $this->page->addVar('avertissement', $avertissement);        
     }
   }
 
@@ -139,7 +137,6 @@ class NewsController extends BackController
       }
       $this->app->httpResponse()->redirect('news-'.$request->getData('news').'.html');
     }
-    $this->page->addVar('type', '.html');
 
     // $this->page->addVar('comment', $comment);
    // $this->page->addVar('form', $form->createView());

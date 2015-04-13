@@ -44,7 +44,7 @@ foreach ($listeNews as $news)
     var author  = $('#auteur').val();
   	var title = $('#titre').val();
   	var field = $('#contenu').val();
-
+    var errors = '';
     var textTitle = "";
     var textField = "";
     
@@ -60,17 +60,19 @@ foreach ($listeNews as $news)
         document.getElementById('contenu').style.backgroundColor = "red";
         textField = 'You have to specify a field';
       }
+      errors = (textTitle + '<br/>' + textField + '<br/>');
       showModal(textTitle + '<br/>' + textField + '<br/>');
     }
     else
     { // on vérifie que les variables ne sont pas vides 
         $.ajax({
-            url : "/admin/news-insert.html",
+            url : "/admin/news-insert.json",
             type : "POST", // la requête est de type POST
             data : {
               auteur : author,
               contenu : field,
-              titre : title
+              titre : title,
+              erreur : errors
             },// et on envoie nos données
             datatype : 'json',
             success : function(html){
@@ -82,7 +84,7 @@ foreach ($listeNews as $news)
                 $('#table').append("<tr><td>" + author + "</td><td>" + title + "</td><td>" + "the " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " at " + d.getHours() + "h" + d.getMinutes() + "</td><td>" + "-</td>"); // on ajoute le message dans la zone prévue
                 document.getElementById('titre').value = "";
                 document.getElementById('contenu').value = "";
-                showModal('Your news is added ! Thank you for your contribution ! ');
+                //showModal('Your news is added ! Thank you for your contribution ! ');
             }
         });
       }  

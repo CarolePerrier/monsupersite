@@ -1,4 +1,8 @@
-<?= $content ?>
-{
-  "errorMessage" : "There is a problem in formular..."
-}
+<?php if ($user->isAuthenticated()) : ?>
+	<?= $content ?>
+<?php else : ?>
+	<?= $error ?>
+<?php endif; ?>
+
+
+

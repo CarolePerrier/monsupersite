@@ -69,7 +69,7 @@ class NewsManagerPDO extends NewsManager
 
   protected function add(News $news)
   {
-    echo 'Attention on ne gere pas le cas ou l\'auteur n\'existe pas';
+
     $requete = $this->dao->prepare('INSERT INTO T_BLG_news SET news_fk_author = :auteurId, auteur = :auteurNews, titre = :titre, contenu = :contenu, dateAjout = NOW(), dateModif = NOW()');
     //Get the AuthorId from his auteur
     $requeteAuteurId = $this->dao->prepare('SELECT BAC_id FROM T_BLG_authorsc WHERE BAC_pseudo = :pseudo');
@@ -80,7 +80,7 @@ class NewsManagerPDO extends NewsManager
     {
       $requete->bindValue(':auteurId', $AuteurId['BAC_id']);
     }
-    echo '<br/>'.$news->titre().' ', $news->contenu().' ',$news->auteur().' ';
+    
     $requete->bindValue(':titre', $news->titre());
     $requete->bindValue(':contenu', $news->contenu());
     $requete->bindValue(':auteurNews', $news->auteur());

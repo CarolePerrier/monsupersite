@@ -15,7 +15,7 @@ class CommentsManagerPDO extends CommentsManager
     $q->bindValue(':email', $comment->email());
     $q->execute();
     //If the comment's author checked the box : his email is added to newsd table with the news' Id .
-    if($comment->avertissement() == 1)
+    if($comment->avertissement() == 'on')
     {
       $request = $this->dao->prepare('INSERT INTO T_BLG_newsd SET email = :Commentemail, newsd_fk_news = :CommentnewsId');
 

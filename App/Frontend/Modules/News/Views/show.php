@@ -46,7 +46,7 @@ if (empty($comments))
   <p>
     <input type="hidden" id="news_id" value="<?= $news['id'] ?>" />
     <?= $form ?>
-
+    <label value="" id="mistakes"></label>
     <input type="submit" value="Commenter" id="envoi"/>
   </p>
 </form>
@@ -55,12 +55,15 @@ if (empty($comments))
 <script>
   $('#auteur').click(function(){
     document.getElementById('auteur').style.backgroundColor = "white";
+    $('#mistakes').html('');
   });
   $('#contenu').click(function(){
     document.getElementById('contenu').style.backgroundColor = "white";
+    $('#mistakes').html('');
   });
   $('#email').click(function(){
     document.getElementById('email').style.backgroundColor = "white";
+    $('#mistakes').html('');
   });
   $('#envoi').click(function(e){
     //e.preventDefault(); // on empêche le bouton d'envoyer le formulaire
@@ -69,24 +72,29 @@ if (empty($comments))
     var field   = $('#contenu').val();
     var email   = $('#email').val();   
     var warning = $('#avertissement').val();
-    
-    if(author == "" || field == "" || email == ""){ // on vérifie que les variables ne sont pas vides 
+    var Mail = checkMail(email);
+    alert(Mail);
+    if(author == "" || field == "" || email == "" || Mail == false){ // on vérifie que les variables ne sont pas vides 
       if(author == "")
       {
         document.getElementById('auteur').style.backgroundColor = "red";
-        textAuthor = 'You have to specify an author';
       }
       if(field == "")
       {
         document.getElementById('contenu').style.backgroundColor = "red";
-        textField = 'You have to specify a field';
       }
       if(email == "")
       {
         document.getElementById('email').style.backgroundColor = "red";
-        textEmail = 'You have to specify an email';
       }
-      showModal(textAuthor+'<br/>'+textField+'<br/>'+textEmail+'<br/>');
+      if(Mail == false)
+      {
+        $('#mistakes').append("Please enter a valid email adress<br/>");
+      }
+      else
+      {
+        $('#mistakes').append("You have to fill all fields");
+      }
     }
     else
     {
@@ -104,8 +112,12 @@ if (empty($comments))
             success : function(html){
                 var d = new Date();
                 $('#nocomment').html('');
-                $('#commentaires').append("<fieldset><legend>Added by <strong>" + author + "</strong> the " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " at " + d.getHours() + "h" + d.getMinutes() + " </legend><p>" + contenu + "</p></fieldset>"); // on ajoute le message dans la zone prévue
-                showModal('Your comment is added ! Thank you for your contribution ! ');
+                $('#commentaires').append("<fieldset><legend>Added by <strong>" + author + "</strong> the " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " at " + d.getHours() + "h" + d.getMinutes() + " </legend><p>" + field + "</p></fieldset>"); // on ajoute le message dans la zone prévue
+                document.getElementById('auteur').value = "";
+                document.getElementById('contenu').value = "";
+                document.getElementById('email').value = "";
+                document.getElementById('avertissement').value = "";
+                //showModal('Your comment is added ! Thank you for your contribution ! ');
             }
         });
 

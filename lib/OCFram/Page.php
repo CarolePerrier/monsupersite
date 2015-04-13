@@ -7,6 +7,12 @@ class Page extends ApplicationComponent
   protected $vars = [];
   protected $type;
 
+  public function __construct(Application $app, $type)
+  {
+    parent::__construct($app);
+    $this->type = $type;
+  }
+
   /**
    * test
    * @param string $var   varname
@@ -24,24 +30,31 @@ class Page extends ApplicationComponent
 
   public function getGeneratedPage()
   {
-    //    var_dump($this->type);
-
+    //var_dump($this->contentFile);
     if (!file_exists($this->contentFile))
     {
       throw new \RuntimeException('La vue spécifiée n\'existe pas');
     }
 
     $user = $this->app->user();
-
     extract($this->vars);
-    var_dump($this->type);
+//    var_dump($this->type);
+    if($this->type == '')
+    {
+      $this->type = 'html';
+    }
 
+//    var_dump($this->type);
     ob_start();
       require $this->contentFile;
     $content = ob_get_clean();
 
     ob_start();
-      require __DIR__.'/../../App/'.$this->app->name().'/Templates/layout.html.php';
+      require __DIR__.'/../../App/'.$this->app->name().'/Templates/layout.'.$this->type.'.php';
+      if($this->type == 'json')
+      {
+        return json_encode($content = include $this->contentFile);
+      }
     return ob_get_clean();
   }
 

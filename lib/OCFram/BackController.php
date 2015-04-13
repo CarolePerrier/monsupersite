@@ -3,22 +3,23 @@ namespace OCFram;
 
 abstract class BackController extends ApplicationComponent
 {
-  protected $action = '';
-  protected $module = '';
-  protected $page = null;
-  protected $view = '';
+  protected $action   = '';
+  protected $module   = '';
+  protected $type     = '';
+  protected $page     = null;
+  protected $view     = '';
   protected $managers = null;
   
-  public function __construct(Application $app, $module, $action)
+  public function __construct(Application $app, $module, $action, $type)
   {
     parent::__construct($app);
     
     $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
-    $this->page = new Page($app);
+    $this->page = new Page($app, $type);
     
     $this->setModule($module);
     $this->setAction($action);
-    $this->setView($action);
+    $this->setView($action, $type);
   }
 
   public function execute()
@@ -58,16 +59,21 @@ abstract class BackController extends ApplicationComponent
     $this->action = $action;
   }
 
-  public function setView($view)
+  public function setView($view, $type)
   {
     if (!is_string($view) || empty($view))
     {
       throw new \InvalidArgumentException('La vue doit être une chaine de caractères valide');
     }
-    
     $this->view = $view;
-    
+    if(!empty($type))
+    {
+      $this->view .= '.'.$type;
+      
+    }
+    //var_dump($this->view);
     $this->page->setContentFile(__DIR__.'/../../App/'.$this->app->name().'/Modules/'.$this->module.'/Views/'.$this->view.'.php');
+
   }
 }
 ?>

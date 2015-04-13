@@ -29,10 +29,8 @@ class NewsController extends BackController
 
   public function executeInsertAjax(HTTPRequest $request)
   {
-
     if(isset($_POST['auteur']) && isset($_POST['contenu']) && isset($_POST['titre']))
     {
-      $type = '.json';
       $variables = array(
         'auteur'        => $_POST['auteur'],
         'contenu'       => $_POST['contenu'],
@@ -51,16 +49,12 @@ class NewsController extends BackController
     }
     else
     {
-      $type = '.html';
       echo "Un de vos champs est faux";
     }
-    $this->page->addVar('type', $type);
-
-
     $this->page->addVar('auteur', $_POST['auteur']);
     $this->page->addVar('contenu', $_POST['contenu']);
     $this->page->addVar('titre', $_POST['titre']);
-
+    $this->page->addVar('errors', $_POST['erreur']);
   }
 
   public function executeInsert(HTTPRequest $request)
@@ -77,9 +71,14 @@ class NewsController extends BackController
 
   public function executeUpdate(HTTPRequest $request)
   {
+    $news = new News; 
+    $formBuilder = new NewsFormBuilder($news);
+    $formBuilder->build(NULL);
+    $form = $formBuilder->form();
     $this->processForm($request);
  
     $this->page->addVar('title', 'Modification d\'une news');
+    $this->page->addVar('form', $form->createView());
   }
   
   public function processForm(HTTPRequest $request)

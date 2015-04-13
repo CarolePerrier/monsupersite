@@ -153,6 +153,7 @@ label {
 input {
 	padding:2px;
 	border:1px solid #eee;
+	border-radius : 7px;
 	font: normal 1em Verdana, sans-serif;
 	color:#777;
 }
@@ -160,6 +161,7 @@ textarea {
 	padding:2px;
 	font: normal 1em Verdana, sans-serif;
 	border:1px solid #eee;
+	border-radius : 7px;
 	height:100px;
 	display:block;
 	color:#777;

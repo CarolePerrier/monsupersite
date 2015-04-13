@@ -41,15 +41,7 @@ class Router
 
           // On assigne ce tableau de variables � la route
           $route->setVars($listVars);
-        }
 
-        // Si elle a des variables
-        if ($route->hasType())
-        {
-          $typeName = $route->typeName();
-        
-          // On assigne cette variable à la route
-          $route->setType($typeName);
         }
 
         return $route;
