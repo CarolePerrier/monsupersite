@@ -22,7 +22,7 @@
     $('#fond').fadeIn(1000);   
     $('#fond').fadeTo("slow",0.8);
     // Effet de transition   
-    $(id).fadeIn(2000);
+    $(id).fadeIn(500);
  
     $('.popup .close').click(function (e) {
     // On désactive le comportement du lien

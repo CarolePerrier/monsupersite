@@ -45,7 +45,6 @@ class NewsController extends BackController
       
       $this->processForm($request);
 
-      //echo json_encode($variables);
     }
     else
     {
@@ -118,7 +117,7 @@ class NewsController extends BackController
     $formHandler = new \OCFram\FormHandler($form, $this->managers->getManagerOf('News'), $request);
     if ($formHandler->process())
     {
-      $this->app->user()->setFlash($news->isNew() ? 'La news a bien été ajoutée !' : 'La news a bien été modifiée !');
+      //$this->app->user()->setFlash($news->isNew() ? 'La news a bien été ajoutée !' : 'La news a bien été modifiée !');
       //$this->app->httpResponse()->redirect('/admin/');
     }
 
@@ -133,7 +132,8 @@ class NewsController extends BackController
       $comment = new Comment([
         'id' => $request->getData('id'),
         'auteur' => $request->postData('auteur'),
-        'contenu' => $request->postData('contenu')
+        'contenu' => $request->postData('contenu'),
+        'email' => $request->postData('email')
       ]);
     }
     else

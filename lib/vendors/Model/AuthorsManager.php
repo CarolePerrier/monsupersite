@@ -13,6 +13,9 @@ abstract class AuthorsManager extends Manager
    */
   abstract protected function add(Author $author);
   
+
+  abstract public function modify(Author $author);
+  
   /**
    * Méthode permettant d'enregistrer un auteur.
    * @param $author L'auteur à enregistrer
@@ -60,7 +63,6 @@ abstract class AuthorsManager extends Manager
 
   abstract public function IsValidAuteur($value);
 
-  abstract public function modify(Author $author);
 
   abstract public function modifyPassword(Author $author, $newPassword);
 }

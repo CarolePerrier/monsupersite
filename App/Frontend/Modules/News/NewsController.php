@@ -43,19 +43,12 @@ class NewsController extends BackController
   {
     if(isset($_POST['auteur']) && isset($_POST['contenu']) && isset($_POST['email']))
     {
-
-        $avertissement = 'off';
-        if (isset($_POST['avertissement']))
-        {
-          $avertissement = $_POST['avertissement'];
-        var_dump($_POST['avertissement']);
-        }
         $variables = array(
           'news'          => $_GET['news'],
           'auteur'        => $_POST['auteur'],
           'contenu'       => $_POST['contenu'],
           'email'         => $_POST['email'],
-          'avertissement' => $avertissement
+          'avertissement' => $_POST['avertissement']
         );
         $comment = new Comment($variables);
 
@@ -89,7 +82,11 @@ class NewsController extends BackController
         $this->page->addVar('auteur', $_POST['auteur']);
         $this->page->addVar('contenu', $_POST['contenu']);
         $this->page->addVar('email', $_POST['email']);
-        $this->page->addVar('avertissement', $avertissement);        
+        $this->page->addVar('avertissement', $_POST['avertissement']);
+        if(isset($_POST['error']))
+        {
+          $this->page->addVar('error', $_POST['error']);
+        }
     }
   }
 

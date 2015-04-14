@@ -20,7 +20,6 @@ class TypeField extends Field
 
     foreach($this->types AS $type)
     {
-    	   // var_dump($type);die;
        	//Utilise le tableau de valeurs
         if($this->value == $type['BAY_id'])
         {

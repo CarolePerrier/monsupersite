@@ -1,4 +1,5 @@
 <h2>Liste des news</h2>
+<p id="info"></p>
 <?php if(!empty($listeNews)): ?>
     <p style="text-align: center" id='news'>There is <?= $nombreNews ?> news. Here is the list :</p>
 <?php else : ?>
@@ -10,7 +11,7 @@
 <?php
 foreach ($listeNews as $news)
 {
-  echo '<tr><td>', $news['auteur'], '</td><td>', $news['titre'], '</td><td>the ', $news['dateAjout']->format('d/m/Y \a\table H\hi'), '</td><td>', ($news['dateAjout'] == $news['dateModif'] ? '-' : 'le '.$news['dateModif']->format('d/m/Y à H\hi'));
+  echo '<tr><td>', $news['auteur'], '</td><td>', $news['titre'], '</td><td>the ', $news['dateAjout']->format('d/m/Y \a\t H\hi'), '</td><td>', ($news['dateAjout'] == $news['dateModif'] ? '-' : 'le '.$news['dateModif']->format('d/m/Y \a\t H\hi'));
   if ($user->isAuthenticatedAdmin()) {
   	echo  '<td><a href="news-update-', $news['id'], '.html"><img src="/images/update.png" alt="Modifier" /></a> <a href="news-delete-', $news['id'], '.html"><img src="/images/delete.png" alt="Supprimer" /></a></td>';
   }
@@ -22,7 +23,7 @@ foreach ($listeNews as $news)
 <div id="modal" class="popup"></div> 
 <h2>Add a news</h2>
 
-<form action="/admin/news-insert.html" method="post" name="formulaire">
+<form action="/admin/news-insert.html" method="post" name="formulaire" id='form'>
   <p>
   	<input type="hidden" id="auteur" value="<?= $auteur ?>" />
     <?= $form?>    
@@ -39,7 +40,7 @@ foreach ($listeNews as $news)
   $('#contenu').click(function(){
     document.getElementById('contenu').style.backgroundColor = "white";
   });
-  $('#add').click(function(e){
+  $('#add').click(function(){
     //e.preventDefault(); // on empêche le bouton d'envoyer le formulaire
     var author  = $('#auteur').val();
   	var title = $('#titre').val();
@@ -80,11 +81,10 @@ foreach ($listeNews as $news)
                 $('#nonews').html('');
                 nombreNews = nombreNews+1;
 
-                $('#news').html("There is " + nombreNews + " news. Here is the list :");              
-                $('#table').append("<tr><td>" + author + "</td><td>" + title + "</td><td>" + "the " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " at " + d.getHours() + "h" + d.getMinutes() + "</td><td>" + "-</td>"); // on ajoute le message dans la zone prévue
-                document.getElementById('titre').value = "";
-                document.getElementById('contenu').value = "";
-                //showModal('Your news is added ! Thank you for your contribution ! ');
+                $('#news').html("There is " + nombreNews + " news. Here is the list :");                
+                $('#table').append("<tr><td>" + author + "</td><td>" + title + "</td><td>" + "the " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " at " + d.getHours() + "h" + d.getMinutes() + "</td><td>" + "-</td>"); // on ajoute le message dans la zone prévue 
+                $('#form')[0].reset();
+                showModal('Your news is added !<br/>Thank you for your contribution ! ');
             }
         });
       }  

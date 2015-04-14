@@ -73,8 +73,16 @@ if (empty($comments))
     var email   = $('#email').val();   
     var warning = $('#avertissement').val();
     var Mail = checkMail(email);
-    alert(Mail);
+    var error = "You cannot submit this formular";
+    
     if(author == "" || field == "" || email == "" || Mail == false){ // on vérifie que les variables ne sont pas vides 
+      $('#mistakes').html('');
+      if(Mail == false)
+      {
+        $('#mistakes').html('');
+        $('#mistakes').append("Please enter a valid email adress<br/>");
+        document.getElementById('email').style.backgroundColor = "red";
+      }
       if(author == "")
       {
         document.getElementById('auteur').style.backgroundColor = "red";
@@ -87,17 +95,19 @@ if (empty($comments))
       {
         document.getElementById('email').style.backgroundColor = "red";
       }
-      if(Mail == false)
-      {
-        $('#mistakes').append("Please enter a valid email adress<br/>");
-      }
-      else
-      {
-        $('#mistakes').append("You have to fill all fields");
-      }
+      $('#mistakes').append("You have to fill all fields");
+
     }
     else
     {
+        if(document.getElementById('avertissement').checked == false)
+        {
+          warning = 'off';
+        }
+        else
+        {
+          warning = 'on';
+        }
         $.ajax({
             url : "/commenter-"+ news +".html",
             type : "POST", // la requête est de type POST
@@ -106,18 +116,16 @@ if (empty($comments))
               auteur : author,
               contenu : field,
               email : email,
-              avertissement : warning
+              avertissement : warning,
+              error : error
             },// et on envoie nos données
             dataType : "json",
             success : function(html){
                 var d = new Date();
                 $('#nocomment').html('');
                 $('#commentaires').append("<fieldset><legend>Added by <strong>" + author + "</strong> the " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " at " + d.getHours() + "h" + d.getMinutes() + " </legend><p>" + field + "</p></fieldset>"); // on ajoute le message dans la zone prévue
-                document.getElementById('auteur').value = "";
-                document.getElementById('contenu').value = "";
-                document.getElementById('email').value = "";
-                document.getElementById('avertissement').value = "";
-                //showModal('Your comment is added ! Thank you for your contribution ! ');
+                $('#form')[0].reset();
+                showModal('Your comment is added !<br/>Thank you for your contribution ! ');
             }
         });
 

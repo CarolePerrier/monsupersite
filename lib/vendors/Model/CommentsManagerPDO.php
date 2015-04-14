@@ -27,6 +27,47 @@ class CommentsManagerPDO extends CommentsManager
 
   }
   
+  // public function modify(Author $author)
+  // {
+  //   $salt = "$2y$14$";
+  //   for ($i = 0; $i < 22; $i++) 
+  //   {
+  //     $salt .= substr("./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", mt_rand(0, 63), 1);
+  //   }
+  //   $requete = $this->dao->prepare('UPDATE T_BLG_authorsc SET BAC_firstname = :firstname, BAC_lastname = :lastname, BAC_password = :password, BAC_pseudo = :pseudo, BAC_dateofbirth = :dateofbirth, BAC_dateModif = NOW(), BAC_email = :email, BAC_salt = :salt WHERE BAC_pseudo = :pseudo');
+    
+  //   $requete->bindValue(':firstname', $author->firstname());
+  //   $requete->bindValue(':lastname', $author->lastname());
+  //   $requete->bindValue(':pseudo', $author->pseudo());
+  //   $requete->bindValue(':password', crypt($author->password(), $salt));
+  //   $requete->bindValue(':dateofbirth', $author->dateofbirth());
+  //   $requete->bindValue(':email', $author->email());
+  //   $requete->bindValue(':salt', $salt);
+    
+  //   $requete->execute();
+  // }
+
+  public function modify(Comment $comment)
+  {
+
+    $q = $this->dao->prepare('UPDATE T_BLG_comments SET auteur = :auteur, contenu = :contenu, date = NOW(), email = :email WHERE id = :id');
+    
+    $q->bindValue(':id', $comment->id(), \PDO::PARAM_INT);
+    $q->bindValue(':auteur', $comment->auteur());
+    $q->bindValue(':contenu', $comment->contenu());
+    $q->bindValue(':email', $comment->email());
+    $q->execute();
+    //If the comment's author checked the box : his email is added to newsd table with the news' Id .
+    if($comment->avertissement() == 'on')
+    {
+      $request = $this->dao->prepare('INSERT INTO T_BLG_newsd SET email = :Commentemail, newsd_fk_news = :CommentnewsId');
+
+      $request->bindValue(':Commentemail' , $comment->email());
+      $request->bindValue(':CommentnewsId', $comment->news());
+      $request->execute();
+    }
+  }
+
   public function getFollowersAuthors($newsId)
   {
     //Send a mail to each person on the list

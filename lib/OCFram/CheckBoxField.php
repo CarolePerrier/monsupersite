@@ -16,7 +16,7 @@ class CheckBoxField extends Field
     $widget .= '<label>'.$this->label.'</label><input type="checkbox" name="'.$this->name.'"';
     if (!empty($this->value))
     {
-      $widget .= 'value=';
+      $widget .= 'value="'.$this->value.'"';
     }
     
     

@@ -92,7 +92,7 @@ class AuthorController extends BackController
     if ($formHandler->process())
     {
       $this->app->user()->setFlash($author->isNew() ? 'L\'auteur a bien été ajouté !' : 'L\'auteur a bien été modifié !');
-      $this->app->httpResponse()->redirect('/admin/');
+      $this->app->httpResponse()->redirect('/admin/author-show.html');
     }
 
     $this->page->addVar('form', $form->createView());
