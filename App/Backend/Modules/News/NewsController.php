@@ -45,15 +45,18 @@ class NewsController extends BackController
       
       $this->processForm($request);
 
+      $this->page->addVar('auteur', $_POST['auteur']);
+      $this->page->addVar('contenu', $_POST['contenu']);
+      $this->page->addVar('titre', $_POST['titre']);
+    } 
+    elseif(isset($_POST['erreur']))
+    {
+      $this->page->addVar('erreur', $_POST['erreur']);
     }
-    else
+    else 
     {
       echo "Un de vos champs est faux";
-    }
-    $this->page->addVar('auteur', $_POST['auteur']);
-    $this->page->addVar('contenu', $_POST['contenu']);
-    $this->page->addVar('titre', $_POST['titre']);
-    $this->page->addVar('errors', $_POST['erreur']);
+    } 
   }
 
   public function executeInsert(HTTPRequest $request)
@@ -173,7 +176,7 @@ class NewsController extends BackController
 
     $this->app->user()->setFlash('La news a bien été supprimée !');
 
-    $this->app->httpResponse()->redirect('.');
+    $this->app->httpResponse()->redirect('/admin/');
   }
   
   public function executeListNewsOfAuthor(HTTPRequest $request)

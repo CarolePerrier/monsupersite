@@ -72,11 +72,12 @@ foreach ($listeNews as $news)
             data : {
               auteur : author,
               contenu : field,
-              titre : title,
-              erreur : errors
+              titre : title
             },// et on envoie nos données
             datatype : 'json',
-            success : function(html){
+            success : function(html, data){
+
+                alert(html);
                 var d = new Date();  
                 $('#nonews').html('');
                 nombreNews = nombreNews+1;

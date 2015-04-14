@@ -11,4 +11,6 @@
 	<route url="/author-([0-9]+)/(.+)-(.+)\.html" module="News" action="ListNewsOfAuthor" vars="id,BAC_firstname,BAC_lastename"/>
 	<route url="/yourdevice\.html" module="devicedetect" action="detect"/>
  	<route url="/author-password-recovering.html" module="PasswordRecovering" action="index"/>
+
+ 	<roue url="/commenter.json" module="News" action="show" vars="id" type="json"/><!--id à partir duquel on raffraichi... à voir après-->
 </routes>

@@ -16,6 +16,8 @@ class ConnexionController extends BackController
   public function executeIndex(HTTPRequest $request)
   {
     $this->page->addVar('title', 'Connexion');
+    $this->page->addVar('global_error_code',500);
+    $this->page->addVar('global_error_message','Vous devez être connecté pour acceder à cette action');
     
     if ($request->postExists('login'))
     {
@@ -39,6 +41,7 @@ class ConnexionController extends BackController
       }
       else
       {
+
         $this->app->user()->setFlash('Le auteur ou le mot de passe est incorrect.');
       }
     }

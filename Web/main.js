@@ -69,3 +69,4 @@ function checkMail(champ)
       return true;
    }
 }
+

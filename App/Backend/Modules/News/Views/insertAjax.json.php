@@ -1,8 +1,18 @@
-<?php 
-	$news = [];
-	$news['auteur']  = $auteur;
-	$news['contenu'] = $contenu;
-	$news['titre'] = $titre;
-	$news['errors'] = $errors;
-	return $news;
+<?php	
+	
+	if($user->isAuthenticated())
+	{
+		$news = [];
+		$news['auteur']  = $auteur;
+		$news['contenu'] = $contenu;
+		$news['titre'] = $titre;
+		return $news;
+	}
+	else
+	{
+		$news = [];
+		$news['erreur'] = 'Erreur';
+		return $news;
+	}
+
 ?>

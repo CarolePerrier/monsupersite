@@ -42,7 +42,7 @@ if (empty($comments))
 </div>
 
 <h2>React</h2>
-<form action="/commenter-<?= $news['id'] ?>.html" method="post" id="form">
+<form action="/commenter-<?= $news['id'] ?>.json" method="post" id="form">
   <p>
     <input type="hidden" id="news_id" value="<?= $news['id'] ?>" />
     <?= $form ?>
@@ -73,7 +73,8 @@ if (empty($comments))
     var email   = $('#email').val();   
     var warning = $('#avertissement').val();
     var Mail = checkMail(email);
-    var error = "You cannot submit this formular";
+    
+    var message = 'Your comment is added !<br/>Thank you for your contribution ! '; 
     
     if(author == "" || field == "" || email == "" || Mail == false){ // on vérifie que les variables ne sont pas vides 
       $('#mistakes').html('');
@@ -107,6 +108,7 @@ if (empty($comments))
         else
         {
           warning = 'on';
+          message = message + '<br/>You will be warned of any new comment added to this news';
         }
         $.ajax({
             url : "/commenter-"+ news +".html",
@@ -116,16 +118,16 @@ if (empty($comments))
               auteur : author,
               contenu : field,
               email : email,
-              avertissement : warning,
-              error : error
+              avertissement : warning
+              
             },// et on envoie nos données
             dataType : "json",
-            success : function(html){
+            success : function(html, data){
                 var d = new Date();
                 $('#nocomment').html('');
-                $('#commentaires').append("<fieldset><legend>Added by <strong>" + author + "</strong> the " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " at " + d.getHours() + "h" + d.getMinutes() + " </legend><p>" + field + "</p></fieldset>"); // on ajoute le message dans la zone prévue
+                $('#commentaires').append("<fieldset><legend>Added by <strong><a href=/news-commented-by/" + email + ".html>" + author + "</a></strong> the " + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " at " + d.getHours() + "h" + d.getMinutes() + " </legend><p>" + field + "</p></fieldset>"); // on ajoute le message dans la zone prévue
                 $('#form')[0].reset();
-                showModal('Your comment is added !<br/>Thank you for your contribution ! ');
+                //showModal(message);
             }
         });
 

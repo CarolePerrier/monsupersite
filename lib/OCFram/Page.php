@@ -39,23 +39,23 @@ class Page extends ApplicationComponent
     $user = $this->app->user();
     extract($this->vars);
 //    var_dump($this->type);
-    if($this->type == '')
+//    
+    if($this->type == 'json')
+    { 
+      $content = include $this->contentFile;
+      return json_encode(include __DIR__.'/../../App/'.$this->app->name().'/Templates/layout.'.$this->type.'.php');
+    }
+    else
     {
       $this->type = 'html';
+        ob_start();
+          require $this->contentFile;
+        $content = ob_get_clean();
+    
+        ob_start();
+          require __DIR__.'/../../App/'.$this->app->name().'/Templates/layout.'.$this->type.'.php';
+        return ob_get_clean();
     }
-
-//    var_dump($this->type);
-    ob_start();
-      require $this->contentFile;
-    $content = ob_get_clean();
-
-    ob_start();
-      require __DIR__.'/../../App/'.$this->app->name().'/Templates/layout.'.$this->type.'.php';
-      if($this->type == 'json')
-      {
-        return json_encode($content = include $this->contentFile);
-      }
-    return ob_get_clean();
   }
 
   public function setContentFile($contentFile)

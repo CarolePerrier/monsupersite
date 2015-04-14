@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <routes>
-  <route url="/connexion.html" module="Connexion" action="index"/>
+  <route url="/admin/connection.html" module="Connexion" action="index"/>
   <route url="/admin/LogOut/" module="LogOut" action="LogOut" />  
   
   <route url="/admin/" module="News" action="index" />

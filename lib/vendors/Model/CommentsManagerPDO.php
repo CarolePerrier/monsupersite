@@ -26,26 +26,6 @@ class CommentsManagerPDO extends CommentsManager
     $comment->setId($this->dao->lastInsertId());
 
   }
-  
-  // public function modify(Author $author)
-  // {
-  //   $salt = "$2y$14$";
-  //   for ($i = 0; $i < 22; $i++) 
-  //   {
-  //     $salt .= substr("./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", mt_rand(0, 63), 1);
-  //   }
-  //   $requete = $this->dao->prepare('UPDATE T_BLG_authorsc SET BAC_firstname = :firstname, BAC_lastname = :lastname, BAC_password = :password, BAC_pseudo = :pseudo, BAC_dateofbirth = :dateofbirth, BAC_dateModif = NOW(), BAC_email = :email, BAC_salt = :salt WHERE BAC_pseudo = :pseudo');
-    
-  //   $requete->bindValue(':firstname', $author->firstname());
-  //   $requete->bindValue(':lastname', $author->lastname());
-  //   $requete->bindValue(':pseudo', $author->pseudo());
-  //   $requete->bindValue(':password', crypt($author->password(), $salt));
-  //   $requete->bindValue(':dateofbirth', $author->dateofbirth());
-  //   $requete->bindValue(':email', $author->email());
-  //   $requete->bindValue(':salt', $salt);
-    
-  //   $requete->execute();
-  // }
 
   public function modify(Comment $comment)
   {
@@ -88,7 +68,7 @@ class CommentsManagerPDO extends CommentsManager
       throw new \InvalidArgumentException('L\'identifiant de la news passé doit être un nombre entier valide');
     }
     
-    $q = $this->dao->prepare('SELECT id, email, news, auteur, contenu, date FROM T_BLG_comments WHERE news = :news');
+    $q = $this->dao->prepare('SELECT id, email, news, auteur, contenu, date FROM T_BLG_comments WHERE news = :news ORDER BY date Asc');
     $q->bindValue(':news', $news, \PDO::PARAM_INT);
     $q->execute();
     

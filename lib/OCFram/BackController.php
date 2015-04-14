@@ -13,7 +13,8 @@ abstract class BackController extends ApplicationComponent
   public function __construct(Application $app, $module, $action, $type)
   {
     parent::__construct($app);
-    
+
+    $this->type = $type;
     $this->managers = new Managers('PDO', PDOFactory::getMysqlConnexion());
     $this->page = new Page($app, $type);
     
@@ -74,6 +75,11 @@ abstract class BackController extends ApplicationComponent
     //var_dump($this->view);
     $this->page->setContentFile(__DIR__.'/../../App/'.$this->app->name().'/Modules/'.$this->module.'/Views/'.$this->view.'.php');
 
+  }
+
+  public function type() 
+  { 
+    return $this->type; 
   }
 }
 ?>
